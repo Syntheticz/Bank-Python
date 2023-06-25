@@ -61,6 +61,12 @@ def next():
     script_path = os.path.join(current_directory, "trans_menu.py")
     subprocess.run(["python", script_path]) 
 
+def cancel_click():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "remove.py")
+    subprocess.run(["python", script_path]) 
+
 #Text Field
 enterPin = StringVar()
 entry_font = ("Arial", 14) 
@@ -130,7 +136,8 @@ button0.pack()
 button_border0.place(x=355, y=470)
 
 cancel_border = Frame(window, highlightbackground = "#651616", highlightthickness = 2, bd=0)
-cancel = Button(cancel_border, text='CANCEL', fg='white', bg='#AC3333', font='bold', height=1, width=7)
+cancel = Button(cancel_border, text='CANCEL', fg='white', bg='#AC3333', font='bold',
+                command=lambda: cancel_click(), height=1, width=7)
 cancel.pack()
 cancel_border.place(x=555, y=320)
 

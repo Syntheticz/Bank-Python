@@ -47,24 +47,28 @@ def error():
     global errorlb
     num = int(transfer.get())
 
-    if len(money)>1:
-        errorlb = Label(window, text="Press only ONE denomination.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-        errorlb.place(x=336, y=280)
-    elif num < 100:
-        errorlb = Label(window, text="Minimum amount is 100.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-        errorlb.place(x=360, y=280)
-    elif num > 50000:
-        errorlb = Label(window, text="Maximum amount is 50,000.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-        errorlb.place(x=345, y=280)
-    elif num % 100 != 0:
-        errorlb = Label(window, text="Amount should only be multiples of 100.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-        errorlb.place(x=305, y=280)
-    #elif num : PAKI LAGAY NALANG DITO IF GREATER THAN CURRENT BALANCE
-        #errorlb = Label(window, text="Amount is greater than current balance.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-        #errorlb.place(x=305, y=280) 
+    if transfer.get().isdigit() or input == "":
+        if len(money)>1:
+            errorlb = Label(window, text="Press only ONE denomination.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=336, y=280)
+        elif num < 100:
+            errorlb = Label(window, text="Minimum amount is 100.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=360, y=280)
+        elif num > 50000:
+            errorlb = Label(window, text="Maximum amount is 50,000.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=345, y=280)
+        elif num % 100 != 0:
+            errorlb = Label(window, text="Amount should only be multiples of 100.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=305, y=280)
+        #elif num : PAKI LAGAY NALANG DITO IF GREATER THAN CURRENT BALANCE
+            #errorlb = Label(window, text="Amount is greater than current balance.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            #errorlb.place(x=305, y=280) 
+        else:
+            errorlb = Label(window, text="Input is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=400, y=280)
     else:
-        errorlb = Label(window, text="Input is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-        errorlb.place(x=400, y=280)
+        errorlb = Label(window, text="Alphabetical and special characters are not allowed.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=270, y=280)
 
 
 # Function to clear contents in text field
@@ -79,26 +83,39 @@ def custom():
     global money
     money = ""
     transfer.set("")
-    transfer_field.configure(state='normal')    # Allows users to edit the text field
+    valid_input = (window.register(onlyDigit), '%P')
+    transfer_field.configure(state='normal', validate='key', validatecommand=valid_input)    # Allows users to edit the text field
 
 # Validates user input   
 def check_input():
+    global errorlb
     custom_input = transfer_field.get()
 
     num = int(custom_input)
-    if num%100==0 and num<50000:
+    if custom_input.startswith("0"):
+        errorlb = Label(window, text="Input can not start with 0.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=360, y=280)
+    elif num%100==0 and num<50000:
         transfer.set(custom_input)
         # if you need to access the value of 'transfer' use transfer.get()
         next()
     else:
         error()
 
+
+def onlyDigit(input):
+    if input.isdigit() or input == "":
+        return TRUE
+    else:
+        error()
+        return FALSE
+
 # Goes to next window and closes current window
 def next():
     window.destroy()
-    #current_directory = os.path.dirname(os.path.abspath(__file__))
-    #script_path = os.path.join(current_directory, "trans_menu.py")
-    #subprocess.run(["python", script_path]) 
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "loading.py")
+    subprocess.run(["python", script_path]) 
 
 def back():
     window.destroy()
