@@ -40,6 +40,12 @@ def next():
     subprocess.run(["python", script_path]) 
     # lagay nalang dito kung ano man sa resibo thingz
 
+def accSum():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "accSummary.py")
+    subprocess.run(["python", script_path]) 
+
 def no_click():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -49,7 +55,7 @@ def no_click():
 # Account Summary
 acc_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
 acc = Button(acc_border, text=' View Account Summary ', fg='#162F65', bg='#E7E6DD', font= ('Arial', 12, 'bold'), activebackground='#3361AC', activeforeground='white',
-             height=1, width=len(' View Account Summary '))
+             command=lambda: accSum(), height=1, width=len(' View Account Summary '))
 acc.pack()
 acc_border.place(x=340, y=190)
 
