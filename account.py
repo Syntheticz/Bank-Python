@@ -34,7 +34,11 @@ def register(account):
 
     """
     print("Registration successful!")
-    print(account)
+    print("Name:", account.name)
+    print("Date of Birth:", account.date_of_birth)
+    print("PIN:", account.PIN)
+    print("Account Number: ", account.account_number)
+    print("Account Balance:", account.account_balance)
 
 def get_name():
     while True:
@@ -43,6 +47,7 @@ def get_name():
             return name.title()
         else:
             print("Invalid name. Please enter only letters and spaces.")
+            
 
 def get_bday():
     while True:
@@ -51,6 +56,7 @@ def get_bday():
             return bdate
         else:
             print("Invalid input. Enter a valid date of birth.")
+            
 
 def get_PIN():
     while True:
@@ -67,17 +73,18 @@ def get_PIN():
                     print("Invalid input. Enter a valid PIN.")        
         else:
             print("You have entered an invalid PIN. Try Again.")
+            
 
 def verify_PIN(pin, confirm_pin):
-    if pin == confirm_pin:
-        return True
-    return False
-
+    return pin == confirm_pin       
+     
 def generate_account_number(existing_account_numbers):
     while True:
         account_number = random.randint(100000, 999999)
         if account_number not in existing_account_numbers:
             return account_number
+        else:
+            generate_account_number()
         
 def get_initial_deposit():
     while True:
@@ -86,6 +93,7 @@ def get_initial_deposit():
             return user_balance
         else:
             print("Enter a valid amount!")
+            
 
 
 def compare_account_bal(amount,user_balance):
@@ -101,20 +109,18 @@ def compare_account_bal(amount,user_balance):
 
 def login(client):
     while True:
-        pin = input("Enter PIN: ")
-        if verify_PIN(client.PIN,pin):
-            #call transaction here, pass current client details
-            #for now just print
-            print(client)
+        pin = input("Enter your PIN: ")
+        if verify_PIN(client.PIN, pin):
+            print("Login successful!")  # Print a message to indicate successful login
+            print(client.PIN)  # Print the client details
 
-            transfer(client,receipient)
-            #testing deposit:
-            #deposit(client)
-
-            #testing withdraw:
-
+            # Rest of the function logic
+            
         else:
-            print("You have entered a wrong pin!")  
+            print("You have entered a wrong PIN!")
+            
+
+
 
 
 
@@ -169,14 +175,14 @@ def withdraw(client):
 
     """
             
-def transfer(client, receipient):
+def transfer(client, recipient):
     while True:
         amount = input("Enter amount to transfer: ")
         amount = float(amount)
         if validate_amount(amount) and compare_account_bal(amount,client.account_balance):
             client.account_balance -= amount
-            receipient.account_balance += amount
-            print(client.account_balance, receipient.account_balance)
+            recipient.account_balance += amount
+            print(client.account_balance, recipient.account_balance)
         else:
             print ("Invalid Amount.")
         
@@ -202,9 +208,8 @@ def validate_PIN(pin):
         return True
     return False;
 
-def validate_initial_deposit(amount):
-    amount = float(amount)
-    if amount >= 10000:
+def validate_initial_deposit(amount):    
+    if float(amount) >= 10000.00:
         return True
     return False
 
@@ -227,10 +232,10 @@ def account_summary(client):
 #for actual implementation, you can either retrieve all accnumbers from the file and pass it in this list, or just check the file one by one.
 existing_account_numbers = ["000000", "111111", "6666666", "654321"]  # List of existing account numbers
 
-
-
-#Login Tester:
 client = Account()
+recipient = Account()
+
+"""
 client.name= "Alexander Rosete"
 client.account_number= "123456"
 client.encrypted_account_bal = ""
@@ -238,28 +243,32 @@ client.account_balance= 15000.00
 client.PIN = "0000"
 client.isActive = True
 
-
-
-#Transfer Tester (recepient)
-
-receipient = Account()
-receipient.name = "Phil Guiang"
-receipient.account_number = "654321"
-receipient.encrypted_account_bal= ""
-receipient.account_balance = 5000.00
-receipient.PIN= "1234"
-receipient.isActive = True
-
 login(client)
 
 
+register(client)
+"""
+"""
+#Transfer Tester (recipient)
+
+recipient = Account()
+recipient.name = "Phil Guiang"
+recipient.account_number = "654321"
+recipient.encrypted_account_bal= ""
+recipient.account_balance = 5000.00
+recipient.PIN= "1234"
+recipient.isActive = True
+
+login(client)
+
+"""
 """ #Registration Tester:
 
 new_account = Account()
 
 # Call the register function
 register(new_account)
+
+
 """
-
-
 
