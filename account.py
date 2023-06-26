@@ -7,6 +7,7 @@ from datetime import datetime
 
 """"
     TO-DO:
+	ATM CHECKER
         ENCRYPTION
         SAVING
         LOGGING
@@ -271,4 +272,3 @@ register(new_account)
 
 
 """
-
