@@ -150,7 +150,7 @@ class DocumentGenerator:
         self.canva.drawString(100,550, "Account Number:  " + str(self.account_number))
         self.canva.drawString(130,530, "Frequency Usage :  " + str(self.frequency_usage))
         self.canva.drawString(130,510, "Transactions:  ")
-        # while (1) dict value != end 
+
         # Define table data
         data = [
             ["Transaction Type", "Amount", "Date|Time"],
@@ -158,6 +158,17 @@ class DocumentGenerator:
             ["Withdraw", "100", "date"],
             ["Transfer", "100", "datetim"],
         ]
+
+        # populate data 
+        # Iterate over the dictionary and populate the table data
+        # for key, values in transaction_data.items():
+        #     transaction_type = values["TransactionType"]
+        #     amount = values["Amount"]
+        #     datetime = values["DateTime"]
+
+        #     # Add a row to the data list
+        #     data.append([transaction_type, amount, datetime])
+
 
         # Set table style
         table_style = [
@@ -167,17 +178,14 @@ class DocumentGenerator:
             ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
             ("FONTSIZE", (0, 0), (-1, 0), 12),
             ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-            ("BACKGROUND", (0, 1), (-1, -1), colors.white),
-          
+            ("BACKGROUND", (0, 1), (-1, -1), colors.white),          
         ]
 
         # Create table object
-        table = Table(data)
+        table = Table(data,100,20)
 
         # Apply table style
         table.setStyle(table_style)
-
-  
 
         # Apply table style
         table.setStyle(table_style)
