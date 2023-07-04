@@ -1,3 +1,5 @@
 # .gitignore
 __pycache__/
 *.txt
+ATM
+ADMIN
