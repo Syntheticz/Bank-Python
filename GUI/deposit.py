@@ -45,9 +45,9 @@ def press(denom):
 # Function that shows error message if input is invalid
 def error():
     global errorlb
-    num = int(deposit.get())
 
     if deposit.get().isdigit() or input == "":
+        num = int(deposit.get())
         if len(money)>1:
             errorlb = Label(window, text="Press only ONE denomination.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=336, y=280)
@@ -127,7 +127,7 @@ def back():
 deposit = StringVar()
 entry_font = ("Arial", 14) 
 deposit_field = Entry(window, textvariable=deposit, width=20, font=entry_font, state='readonly',      # Does not allow users to edit text field
-                  justify="center", fg='#162F65')
+                   justify="center", fg='#162F65')
 deposit_field.place(x=335, y=225)
 
 # Deposit Denominations 
