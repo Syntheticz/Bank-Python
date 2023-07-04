@@ -4,6 +4,7 @@ import os
 from PIL import ImageTk, Image
 
 
+
 #Windows specifications
 window = Tk()
 
@@ -26,9 +27,11 @@ window.grid_rowconfigure(0, weight=1)
 window.grid_columnconfigure(0, weight=1)
 
 # Logo
+
 script_dir = os.path.dirname(os.path.abspath('new.png'))
 image_path = os.path.join(script_dir, 'new.png')
 image = Image.open(image_path)
+
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)

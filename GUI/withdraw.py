@@ -1,6 +1,9 @@
 from tkinter import *
 import subprocess
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import account
 from PIL import ImageTk, Image
 
 
@@ -20,9 +23,11 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Logo
+
 script_dir = os.path.dirname(os.path.abspath('new.png'))
 image_path = os.path.join(script_dir, 'new.png')
 image = Image.open(image_path)
+
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
@@ -34,6 +39,11 @@ instruct.place(x=300, y=180)
 
 #Text Field for Account Number
 money = ""
+
+#Deposit Logic
+def account_withdraw():
+    amount = withdraw.get()
+    account.withdraw(amount)
 
 # Function for pressing the button
 def press(denom):
@@ -62,9 +72,9 @@ def error():
         elif num % 100 != 0:
             errorlb = Label(window, text="Amount should only be multiples of 100.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=305, y=280)
-        #elif num : PAKI LAGAY NALANG DITO IF GREATER THAN CURRENT BALANCE
-            #errorlb = Label(window, text="Amount is greater than current balance.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-            #errorlb.place(x=305, y=280) 
+        elif num > account.get_userBal():
+            errorlb = Label(window, text="Amount is greater than current balance.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=305, y=280) 
         else:
             errorlb = Label(window, text="Input is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=400, y=280)
@@ -97,6 +107,9 @@ def check_input():
     if custom_input.startswith("0"):
         errorlb = Label(window, text="Input can not start with 0.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
         errorlb.place(x=360, y=280)
+    elif num > account.get_userBal():
+            errorlb = Label(window, text="Amount is greater than current balance.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=305, y=280) 
     elif num%100==0 and num<50000:
         withdraw.set(custom_input)
         # if you need to access the value of 'withdraw' use withdraw.get()
@@ -114,6 +127,7 @@ def onlyDigit(input):
 
 # Goes to next window and closes current window
 def next():
+    account_withdraw()
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "loading.py")

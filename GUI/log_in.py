@@ -1,6 +1,10 @@
 from tkinter import *
 import subprocess
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import account
 from PIL import ImageTk, Image
 
 
@@ -22,6 +26,7 @@ window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Insert Logo
 script_dir = os.path.dirname(os.path.abspath('new.png'))
+
 image_path = os.path.join(script_dir, 'new.png')
 image = Image.open(image_path)
 photo_label = Label(window, bg="#E7E6DD")
@@ -36,6 +41,10 @@ instruct.place(x=370, y=180)
 #Text Field for Account Number
 pin =""
 
+#LOGIN:
+def login():
+     pin = enterPin.get()
+     account.login(pin)
 # Function for pressing the button
 def press(num):
     global pin
@@ -58,6 +67,7 @@ def clear():
 
 # Function to go to Transaction Menu
 def next():
+    login()
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "trans_menu.py")
