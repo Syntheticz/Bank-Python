@@ -4,6 +4,7 @@ import os
 from PIL import ImageTk, Image
 
 
+
 #Windows specifications
 window = Tk()
 
@@ -26,7 +27,7 @@ window.grid_rowconfigure(0, weight=1)
 window.grid_columnconfigure(0, weight=1)
 
 # Logo
-image = Image.open("C:/Users/simon/OneDrive/Desktop/school/progs/Second Year/Python/BankSystem/new.png")
+image = Image.open("C:/Users/Yissus/Desktop/Bank/Bank-Python/GUI/new.png")
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)

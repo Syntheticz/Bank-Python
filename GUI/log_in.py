@@ -19,14 +19,14 @@ screen_height = window.winfo_screenheight()
 
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
-
+"""
 # Insert Logo
 image = Image.open("C:/Users/simon/OneDrive/Desktop/school/progs/Second Year/Python/BankSystem/new.png")
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
 photo_label.place(x=350, y=20)
-
+"""
 # Insert Instructions for User
 instruct = Label(window, text="Please enter PIN", font=("Arial", 16), fg='#162F65', bg="#E7E6DD")
 instruct.place(x=370, y=180)

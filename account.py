@@ -2,6 +2,23 @@ import random
 from objects import Account
 from datetime import datetime
 
+#TESTER:
+client = Account()
+client.name= "Alexander Rosete"
+client.account_number= "123456"
+client.encrypted_account_bal = ""
+client.account_balance= 10000.00
+client.PIN = "0000"
+client.isActive = True
+
+
+recipient = Account()
+recipient.name = "Phil Guiang"
+recipient.account_number = ""
+recipient.encrypted_account_bal= ""
+recipient.account_balance = 3000.00
+recipient.PIN= "1234"
+recipient.isActive = True
 
 
 
@@ -98,7 +115,7 @@ def get_initial_deposit():
 
 
 def compare_account_bal(amount,user_balance):
-    if user_balance > amount:
+    if user_balance >= amount:
         return True
     return False
 
@@ -128,19 +145,21 @@ def login(client):
 
 #TRANSACTION
 
+def get_userBal():
+    #RETRIEVE HERE: the account details to check latest userbalance
+    #BUT FOR TESTING:
+    return client.account_balance
 
-
-def deposit(client):
+def deposit(amount):
     while True:
-        amount = input("Enter amount to deposit: [min 100.00]")
         amount = float(amount)
         if validate_amount(amount):
             client.account_balance += amount
             print(client.account_balance)
             break
-            #save the updated balance
-            #log the transaction
-            #checksum
+            #SAVE HERE
+            #LOG HERE
+            #CHECKSUM HERE
         else:
             print("Invalid Amount.")
 
@@ -154,18 +173,21 @@ def deposit(client):
     """
             
 
-def withdraw(client):
+def withdraw(amount):
     while True:
-        amount= input ("Enter amount to withdraw: [min 100.00]")
+        
         amount= float(amount)
 
         if validate_amount(amount) and compare_account_bal(amount,client.account_balance):
             client.account_balance -= amount
-            #save the updated balance
-            #log the transaction
-            #checksum
+            print(client.account_balance)
+            break
+            #SAVE HERE
+            #LOG HERE
+            #CHECKSUM HERE
         else:
             print("Invalid Amount.")
+            break
 
     """"
     TO-DO:
@@ -176,16 +198,28 @@ def withdraw(client):
 
     """
             
-def transfer(client, recipient):
+def receiver(account_receiver):
+    #RETRIEVE HERE USING THE account number from account_receiver
+    #FOR TESTING:
+    recipient.account_number = account_receiver
+    print(account_receiver)
+    print("SENDER: " , client.account_balance , "RECIPIENT: " , recipient.account_balance)
+   
+
+
+    
+def transfer(amount):
     while True:
-        amount = input("Enter amount to transfer: ")
+        
         amount = float(amount)
         if validate_amount(amount) and compare_account_bal(amount,client.account_balance):
             client.account_balance -= amount
             recipient.account_balance += amount
-            print(client.account_balance, recipient.account_balance)
+            print("SENDER: " , client.account_balance , "RECIPIENT: " , recipient.account_balance)
+            break
         else:
             print ("Invalid Amount.")
+            break
         
 
 #VALIDATION
@@ -233,8 +267,7 @@ def account_summary(client):
 #for actual implementation, you can either retrieve all accnumbers from the file and pass it in this list, or just check the file one by one.
 existing_account_numbers = ["000000", "111111", "6666666", "654321"]  # List of existing account numbers
 
-client = Account()
-recipient = Account()
+
 
 """
 client.name= "Alexander Rosete"
@@ -246,9 +279,9 @@ client.isActive = True
 
 login(client)
 
-
-register(client)
 """
+
+
 """
 #Transfer Tester (recipient)
 

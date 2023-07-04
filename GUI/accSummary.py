@@ -64,7 +64,7 @@ ok_border.place(x=410, y=440)
 
 
 # Logo
-image = Image.open("C:/Users/simon/OneDrive/Desktop/school/progs/Second Year/Python/BankSystem/new.png")
+image = Image.open("C:/Users/Yissus/Desktop/Bank/Bank-Python/GUI/new.png")
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
