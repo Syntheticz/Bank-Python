@@ -125,17 +125,18 @@ def compare_account_bal(amount,user_balance):
 
 #LOGIN
 
-def login(client):
+def login(pin):
+    #RETRIEVE HERE - CLIENT DETAILS, specially client.PIN
     while True:
-        pin = input("Enter your PIN: ")
         if verify_PIN(client.PIN, pin):
             print("Login successful!")  # Print a message to indicate successful login
             print(client.PIN)  # Print the client details
-
+            break;
             # Rest of the function logic
             
         else:
             print("You have entered a wrong PIN!")
+            break;
             
 
 
@@ -146,19 +147,20 @@ def login(client):
 #TRANSACTION
 
 def get_userBal():
-    #RETRIEVE HERE: the account details to check latest userbalance
+    #RETRIEVE HERE- the account details to check latest userbalance
     #BUT FOR TESTING:
     return client.account_balance
 
 def deposit(amount):
+    #RETRIEVE HERE - retrieve client details, most importantly client.account_balance
     while True:
         amount = float(amount)
         if validate_amount(amount):
             client.account_balance += amount
             print(client.account_balance)
             break
-            #SAVE HERE
-            #LOG HERE
+            #SAVE HERE - update balance of user
+            #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             #CHECKSUM HERE
         else:
             print("Invalid Amount.")
@@ -174,6 +176,7 @@ def deposit(amount):
             
 
 def withdraw(amount):
+    #RETRIEVE HERE - retrieve client details, most importantly client.account_balance
     while True:
         
         amount= float(amount)
@@ -182,8 +185,8 @@ def withdraw(amount):
             client.account_balance -= amount
             print(client.account_balance)
             break
-            #SAVE HERE
-            #LOG HERE
+            #SAVE HERE - update balance of user
+            #LOG HERE - Account: client.account_number, transaction: withdraw, amount: amount
             #CHECKSUM HERE
         else:
             print("Invalid Amount.")
@@ -209,6 +212,7 @@ def receiver(account_receiver):
 
     
 def transfer(amount):
+    #RETRIEVE HERE - retrieve client/sender details, most importantly client.account_balance
     while True:
         
         amount = float(amount)
@@ -216,6 +220,9 @@ def transfer(amount):
             client.account_balance -= amount
             recipient.account_balance += amount
             print("SENDER: " , client.account_balance , "RECIPIENT: " , recipient.account_balance)
+            #SAVE HERE- updated balance of client and update balance of recipient
+            #LOG HERE- Account: client.account_number, Transaction: Transfer, Amount: amount
+            #CHECKSUM HERE-
             break
         else:
             print ("Invalid Amount.")
@@ -256,7 +263,7 @@ def validate_amount(amount):
 
 
 def account_summary(client):
-    #retrieve first from file the latest account summary of the current client
+    #RETRIEVE HERE - Account details of client
     print("Your balance is: " + client.account_balance)    
 
 
