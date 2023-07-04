@@ -7,7 +7,7 @@ from PIL import ImageTk, Image
 #Windows specifications
 window = Tk()
 
-window.title("Account Summary")
+window.title("Account is Registered!")
 window.configure(background = "#E7E6DD")
 window.resizable(False, False)
 
@@ -26,7 +26,7 @@ currBal = "1009099"
 def next():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "new_trans.py")
+    script_path = os.path.join(current_directory, "trans_menu.py")
     subprocess.run(["python", script_path]) 
 
 def hide_accNum():
@@ -35,8 +35,8 @@ def hide_accNum():
 
 hide_accNum()
 
-goBack = Label(window, text="Account Summary", font=("Arial", 16, 'bold'), fg='#162F65', bg="#E7E6DD")
-goBack.place(x=355, y=200)
+goBack = Label(window, text="Account Registration Successful!", font=("Arial", 16, 'bold'), fg='#162F65', bg="#E7E6DD")
+goBack.place(x=290, y=200)
 
 mid = Frame(window, highlightbackground = "#651616", bd=0)
 mid.place(x=330, y=280)
@@ -64,11 +64,9 @@ ok_border.place(x=410, y=440)
 
 
 # Logo
-
 script_dir = os.path.dirname(os.path.abspath('new.png'))
 image_path = os.path.join(script_dir, 'new.png')
 image = Image.open(image_path)
-
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)

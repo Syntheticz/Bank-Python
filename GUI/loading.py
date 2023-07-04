@@ -22,7 +22,11 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Logo
-image = Image.open("C:/Users/Yissus/Desktop/Bank/Bank-Python/GUI/new.png")
+
+script_dir = os.path.dirname(os.path.abspath('new.png'))
+image_path = os.path.join(script_dir, 'new.png')
+image = Image.open(image_path)
+
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)

@@ -23,7 +23,11 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Logo
-image = Image.open("C:/Users/Yissus/Desktop/Bank/Bank-Python/GUI/new.png")
+
+script_dir = os.path.dirname(os.path.abspath('new.png'))
+image_path = os.path.join(script_dir, 'new.png')
+image = Image.open(image_path)
+
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
@@ -53,9 +57,9 @@ def press(denom):
 # Function that shows error message if input is invalid
 def error():
     global errorlb
-    num = int(withdraw.get())
 
     if withdraw.get().isdigit() or input == "":
+        num = int(withdraw.get())
         if len(money)>1:
             errorlb = Label(window, text="Press only ONE denomination.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=336, y=280)
