@@ -35,7 +35,7 @@ def cancel_click():
 
 
 # Logo
-script_dir = os.path.dirname(os.path.abspath('new.png'))
+script_dir = os.path.dirname(os.path.abspath('GUI/new.png'))
 image_path = os.path.join(script_dir, 'new.png')
 image = Image.open(image_path)
 photo_label = Label(window, bg="#E7E6DD")
