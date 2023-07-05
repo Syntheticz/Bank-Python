@@ -1,9 +1,21 @@
 from tkinter import *
 import subprocess
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import account
+from objects import Account
+
 from PIL import ImageTk, Image
 
+current_user = Account()
 
+def retrieve():
+    global current_user
+    current_user = account.account_summary()
+
+retrieve()
 
 #Windows specifications
 window = Tk()
@@ -21,7 +33,7 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Current Balance
-bal = Label(window, text=("₱ " + "30000"), font=("Arial", 20), fg='#162F65', bg="#E7E6DD")
+bal = Label(window, text= "₱" + str("{:.2f}".format(current_user.account_balance)), font=("Arial", 20), fg='#162F65', bg="#E7E6DD")
 bal.grid(row=0, column=0, sticky="nsew")
 window.grid_rowconfigure(0, weight=1)
 window.grid_columnconfigure(0, weight=1)

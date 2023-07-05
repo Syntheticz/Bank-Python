@@ -131,12 +131,14 @@ def login(pin):
         if verify_PIN(client.PIN, pin):
             print("Login successful!")  # Print a message to indicate successful login
             print(client.PIN)  # Print the client details
-            break;
+            return True
+            break
             # Rest of the function logic
             
         else:
             print("You have entered a wrong PIN!")
-            break;
+            return False
+            break
             
 
 
@@ -149,7 +151,7 @@ def login(pin):
 def get_userBal():
     #RETRIEVE HERE- the account details to check latest userbalance
     #BUT FOR TESTING:
-    return client.account_balance
+    return round(client.account_balance,2)
 
 def deposit(amount):
     #RETRIEVE HERE - retrieve client details, most importantly client.account_balance
@@ -262,9 +264,13 @@ def validate_amount(amount):
     return False
 
 
-def account_summary(client):
-    #RETRIEVE HERE - Account details of client
-    print("Your balance is: " + client.account_balance)    
+def account_summary():
+    #RETRIEVE HERE - Account details of user
+    #client = retrieved details NOTE: client here is a class
+    #but for testing eto muna:
+
+    print("Your balance is: ", client.account_balance)
+    return client 
 
 
 

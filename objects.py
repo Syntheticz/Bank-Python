@@ -23,7 +23,7 @@ class Account:
         self.date_of_birth = ""
         self.PIN = ""
         self.encrypted_account_bal = ""
-        self.account_balance = 0.0
+        self.account_balance = 0.00
         self.isActive = True
 
     def __str__(self):

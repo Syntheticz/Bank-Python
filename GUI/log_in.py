@@ -25,7 +25,7 @@ window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 
 # Insert Logo
-script_dir = os.path.dirname(os.path.abspath('new.png'))
+script_dir = os.path.dirname(os.path.abspath('GUI/new.png'))
 
 image_path = os.path.join(script_dir, 'new.png')
 image = Image.open(image_path)
@@ -38,13 +38,16 @@ photo_label.place(x=350, y=20)
 instruct = Label(window, text="Please enter PIN", font=("Arial", 16), fg='#162F65', bg="#E7E6DD")
 instruct.place(x=370, y=180)
 
+
+
 #Text Field for Account Number
 pin =""
 
 #LOGIN:
-def login():
-     pin = enterPin.get()
-     account.login(pin)
+def login(pin):
+
+     return account.login(pin)
+
 # Function for pressing the button
 def press(num):
     global pin
@@ -53,10 +56,6 @@ def press(num):
         enterPin.set(pin)
 
 # Function that shows error message if PIN is invalid
-def error():
-    global errorlb
-    errorlb = Label(window, text="PIN is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-    errorlb.place(x=400, y=280)
 
 # Function to clear contents in text field
 def clear():
@@ -65,9 +64,9 @@ def clear():
     enterPin.set("")
     errorlb.config(text="", fg="#E7E6DD")
 
+
 # Function to go to Transaction Menu
 def next():
-    login()
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "trans_menu.py")
@@ -78,6 +77,20 @@ def cancel_click():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "remove.py")
     subprocess.run(["python", script_path]) 
+
+# Function that shows error message if PIN is invalid or incorrect
+def check_input():
+    global errorlb
+    pin = enterPin.get()
+    if len(pin) != 4: 
+        errorlb = Label(window, text="PIN is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=400, y=280)
+    else:
+        if not login(pin):
+            errorlb= Label(window, text="PIN is incorrect.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+            errorlb.place(x=400, y=280)
+        else:
+            next()
 
 #Text Field
 enterPin = StringVar()
@@ -161,7 +174,7 @@ clear_border.place(x=555, y=370)
 
 ok_border = Frame(window, highlightbackground = "#1C6516", highlightthickness = 2, bd=0)
 ok = Button(ok_border, text=' OK ', fg='white', bg='#5AAC33', font='bold',
-                    command=lambda: next() if len(pin) == 4 else error(), height=1, width=7)
+                    command= check_input, height=1, width=7)
 ok.pack()
 ok_border.place(x=555, y=420)
 
