@@ -147,45 +147,68 @@ class DocumentGenerator:
         self.canva.setDash([4, 2])  # Set the dash pattern (4 units on, 2 units off)
         self.canva.line(100, 600, 512, 600)
 
-        self.canva.drawString(100,550, "Account Number:  " + str(self.account_number))
-        self.canva.drawString(130,530, "Frequency Usage :  " + str(self.frequency_usage))
-        self.canva.drawString(130,510, "Transactions:  ")
-
-        # Define table data
-        data = [
-            ["Transaction Type", "Amount", "Date|Time"],
-            ["Deposit", "100", "time"],
-            ["Withdraw", "100", "date"],
-            ["Transfer", "100", "datetim"],
+        # Prepare the table data
+        data = [  
         ]
 
-        # populate data 
-        # Iterate over the dictionary and populate the table data
-        # for key, values in transaction_data.items():
-        #     transaction_type = values["TransactionType"]
-        #     amount = values["Amount"]
-        #     datetime = values["DateTime"]
+        # Define the dictionary with account details
+        account_details = {
+            "12345": {
+                "FrequencyUsage": 3,
+                "Transactions": [
+                    {
+                        "TransactionType": "Deposit",
+                        "Amount": 100,
+                        "DateTime": "2023-06-30 12:34:56"
+                    },
+                    {
+                        "TransactionType": "Withdraw",
+                        "Amount": 200,
+                        "DateTime": "2023-07-01 09:00:00"
+                    },
+                    {
+                        "TransactionType": "Transfer",
+                        "Amount": 150,
+                        "DateTime": "2023-07-02 15:30:00"
+                    }
+                ]
+            },
+            
+        }
 
-        #     # Add a row to the data list
-        #     data.append([transaction_type, amount, datetime])
+        # Iterate over the records and populate the table data
+        for account_number, details in account_details.items():
+            frequency_usage = details["FrequencyUsage"]
+            transactions = details["Transactions"]
 
+            # Add frequency usage to the table
+            data.append(["Account Number: " + str(account_number)])
+            data.append(["Frequency Usage: " + str(frequency_usage)])
+            data.append(["Transaction Type", "Amount", "Date|Time"]);
+            data.append([])  # Add an empty row
+            
+            # Add transaction details to the table
+            for transaction in transactions:
+                transaction_type = transaction["TransactionType"]
+                amount = transaction["Amount"]
+                datetime = transaction["DateTime"]
+                data.append([transaction_type, str(amount), datetime])
+
+            data.append([])  # Add an empty row after each account
 
         # Set table style
-        table_style = [
+        table_style = TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), colors.white),
             ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
             ("ALIGN", (0, 0), (-1, -1), "CENTER"),
             ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
             ("FONTSIZE", (0, 0), (-1, 0), 12),
             ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
-            ("BACKGROUND", (0, 1), (-1, -1), colors.white),          
-        ]
+            ("BACKGROUND", (0, 1), (-1, -1), colors.white),
+        ])
 
         # Create table object
-        table = Table(data,100,20)
-
-        # Apply table style
-        table.setStyle(table_style)
+        table = Table(data, colWidths=[100, 100, 150])
 
         # Apply table style
         table.setStyle(table_style)
@@ -197,8 +220,10 @@ class DocumentGenerator:
         table_x = (letter[0] - table_width) / 2
         table_y = (letter[1] - table_height) / 2
         table.drawOn(self.canva, table_x , table_y + 50)
-        # Save the document 
+
+        # Save the PDF file
         self.canva.save()
+
 
         print("saved")
 
