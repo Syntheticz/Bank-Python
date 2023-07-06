@@ -1,6 +1,9 @@
 from tkinter import *
 import subprocess
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import account
 from PIL import ImageTk, Image
 
 
@@ -20,7 +23,11 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Logo
-image = Image.open("C:/Users/simon/OneDrive/Desktop/school/progs/Second Year/Python/BankSystem/new.png")
+
+script_dir = os.path.dirname(os.path.abspath('GUI/new.png'))
+image_path = os.path.join(script_dir, 'new.png')
+image = Image.open(image_path)
+
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
@@ -33,6 +40,11 @@ instruct.place(x=285, y=180)
 #Text Field for Account Number
 pin =""
 
+def get_receiver():
+    account.receiver(enterPin.get())
+    
+    
+    
 # Function for pressing the button
 def press(num):
     global pin
@@ -43,7 +55,7 @@ def press(num):
 # Function that shows error message if PIN is invalid
 def error():
     global errorlb
-    errorlb = Label(window, text="PIN is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+    errorlb = Label(window, text="Invalid Account Number.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
     errorlb.place(x=400, y=280)
 
 # Function to clear contents in text field
@@ -54,6 +66,7 @@ def clear():
     errorlb.config(text="", fg="#E7E6DD")
 
 def next():
+    get_receiver()
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "transfer_2.py")
