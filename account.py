@@ -250,7 +250,7 @@ def validate_date_of_birth(date_of_birth):
 def validate_PIN(pin):
     if pin.isdigit() and len(pin) == 4:
         return True
-    return False;
+    return False
 
 def validate_initial_deposit(amount):    
     if float(amount) >= 10000.00:
