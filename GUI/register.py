@@ -91,10 +91,7 @@ def error():
         next()
 
 def next():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "regSuccess.py")
-    subprocess.run(["python", script_path]) 
+    pass
 
 
 # Insert Instructions for User

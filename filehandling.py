@@ -13,10 +13,35 @@ import time
 FILENAME = "Records.txt"
 FILEPATH = ["ATM", "ADMIN"]
 CARD_PATH= ""
-KEY =5
+
+KEY = 5
 
 def saveAccount(account):
     temp = account
+
+    #check if the card is inserted
+    if not is_card_inserted:
+        print("Card is not inserted")
+        return
+
+    # Cheks if the file exist
+    if not path.isfile(CARD_PATH):
+        print("File is missing")
+        return
+
+    check_acc_card = read_card(CARD_PATH)
+
+    #Checks if record exist
+    if check_acc_card is None:
+        print("No Existing Record to retrieve")
+        return
+    
+    check_acc = retrieve_by_account_number(check_acc_card.account_number)
+
+    if check_acc is None:
+        print("Records does not match any of our records must be because the record is tampered or has the wrong card")
+        return
+
     encrypt_account(temp, KEY)
     
     for PATH in FILEPATH:
@@ -30,12 +55,14 @@ def saveAccount(account):
                 pass
         save(f"{PATH}/{FILENAME}", temp)
     
-def save_to_card(account_number : str):
-    account = retrieve_by_account_number(CARD_PATH, account_number)
+
+def save_to_card(account : ACCOUNT):
     if account is None:
         print("Error")
         return
-    
+    with open(CARD_PATH, "w") as file:
+        file.write(account.to_csv + "\n")
+        file.write()
 
 def save(filepath: str, account: ACCOUNT):
     if not path.isfile(filepath):
@@ -119,81 +146,16 @@ def decrypt_account(account : ACCOUNT, key):
     account.account_balance = decrypt_decimal(account.encrypted_account_bal, key)
     account.encrypted_account_bal = "0"
 
-def check_removable_drive():
-    # Run system command to get drive information
-    cmd = "wmic logicaldisk get caption, drivetype"
-    output = subprocess.check_output(cmd, shell=True).decode("utf-8")
-
-    # Parse the output to extract removable drives
-    drives = []
-    lines = output.strip().split("\n")[1:]
-    for line in lines:
-        drive, drivetype = line.split()
-        if int(drivetype) == 2:
-            drives.append(drive)
-
-    return drives
-
-def get_removable_drive_path(drive_letter):
-    cmd = "wmic logicaldisk where caption='{}' get name".format(drive_letter)
-    output = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    lines = output.strip().split("\n")
-    if len(lines) >= 2:
-        drive_path = lines[1].strip()
-        return drive_path
-    return None
-
-import time
-import subprocess
-from os import path
-
-def initial_card_check():
-    # Initial check for removable drives
-    global CARD_PATH
-
-    previous_drives = check_removable_drive()
-    print("Please insert Flash Drive...")
-
-    # Wait for a short interval before checking again
-    interval = 0.5  # in seconds
-    time.sleep(interval)
-
-    # Check for removable drives
-    current_drives = check_removable_drive()
-
-    # Compare current and previous drives to detect changes
-    added_drives = [drive for drive in current_drives if drive not in previous_drives]
-    removed_drives = [drive for drive in previous_drives if drive not in current_drives]
-
-    # Handle added and removed drives
-    if added_drives:
-        print("Card Inserted")
-        print("Validating...")
-        drive_path = get_removable_drive_path(added_drives[0])
-        file_path = f"{drive_path}\\record.txt"
-        print(file_path)
-        if not path.isfile(file_path):
-            return False
-        else:   
-            return True
-
-    if removed_drives:
-        print("Please Insert Your Card!")
-        return None
-        
-
-    # Update the previous drives list
-    previous_drives = current_drives
-
-def read_card(file_path):
+def read_card(path):
     global KEY
-    with open(file_path, 'r') as file:
+    with open(path, 'r') as file:
         data = file.readline().strip()
-        KEY = int(file.readline().strip())
         account = ACCOUNT.from_csv(data)
         retrieved_account : ACCOUNT = retrieve_by_account_number(f"{FILEPATH[0]}\\{FILENAME}", account.account_number)
         if retrieved_account is None:
             return None
+        KEY = int(file.readline().strip())
+        print(f"KEY: {KEY}")
         return retrieved_account
         
 def is_card_inserted(file_path):
@@ -202,16 +164,7 @@ def is_card_inserted(file_path):
     else:
         return True
 
-def save_to_card():
-    if not is_card_inserted():
-        return
-    
-def test_run(account : ACCOUNT):
-    if not is_card_inserted or account is None:
-        print("There was an error")
-        return
-    
-    decrypt_account(account, KEY)
-    print("WELCOME, " + account.name)
-
+def fetch_acc(account_number : str):
+    number = swap_chars(account_number, KEY)
+    return retrieve_by_account_number(f"{FILEPATH[0]}\\{FILENAME}", number)
 
