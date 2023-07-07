@@ -4,6 +4,7 @@ import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+
 from objects import Account
 import account
 from PIL import ImageTk, Image
@@ -84,6 +85,7 @@ photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
 photo_label.place(x=350, y=20)
+
 
 
 window.mainloop()

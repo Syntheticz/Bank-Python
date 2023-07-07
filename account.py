@@ -1,5 +1,6 @@
 import random
 from objects import Account
+from filehandling import read_card, fetch_acc, saveAccount, get_card_path, get_key, decrypt_account
 from datetime import datetime
 
 #TESTER:
@@ -24,9 +25,8 @@ recipient.isActive = True
 
 """"
     TO-DO:
-	ATM CHECKER
-        ENCRYPTION
-        SAVING
+        RETRIEVE: use fetch_acc(accnum, KEY)
+        SAVING: user saveAccount(class account)
         LOGGING
         CHECKSUM
  """
@@ -126,7 +126,18 @@ def compare_account_bal(amount,user_balance):
 #LOGIN
 
 def login(pin):
-    #RETRIEVE HERE - CLIENT DETAILS, specially client.PIN
+    #RETRIEVE FIRST: CONTENTS OF FLASH DRIVE: records.txt, and decrypt it
+    card_path = get_card_path()
+    acc = read_card (card_path)
+    print(acc)
+    #DECRYPT: 
+    card_key = get_key(card_path)
+
+    #RETRIEVE HERE - CLIENT DETAILS using retrieved accountnumber from records.txt, specially client.PIN, function name: fetch_acc()
+    client = Account()
+    client = fetch_acc(client.account_number)
+    decrypt_account(client, card_key)
+    #compare 2 retrieve: 1 from main database, 1 from card, compare the pin
     while True:
         if verify_PIN(client.PIN, pin):
             print("Login successful!")  # Print a message to indicate successful login

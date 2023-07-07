@@ -1,9 +1,13 @@
+import os
+import psutil
 from os import path, makedirs
 from objects import Account as ACCOUNT
 from random import randint
 
 import importlib
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 
 import subprocess
@@ -147,15 +151,16 @@ def decrypt_account(account : ACCOUNT, key):
     account.encrypted_account_bal = "0"
 
 def read_card(path):
-    global KEY
+    card_key = get_key(path)
+
     with open(path, 'r') as file:
         data = file.readline().strip()
         account = ACCOUNT.from_csv(data)
         retrieved_account : ACCOUNT = retrieve_by_account_number(f"{FILEPATH[0]}\\{FILENAME}", account.account_number)
         if retrieved_account is None:
             return None
-        KEY = int(file.readline().strip())
-        print(f"KEY: {KEY}")
+        card_key = get_key(path)
+        print(f"KEY: {card_key}")
         return retrieved_account
         
 def is_card_inserted(file_path):
@@ -168,3 +173,18 @@ def fetch_acc(account_number : str):
     number = swap_chars(account_number, KEY)
     return retrieve_by_account_number(f"{FILEPATH[0]}\\{FILENAME}", number)
 
+def get_card_path():
+    drives=psutil.disk_partitions()
+
+    for drive in drives:
+        if 'removable' in drive.opts and drive.mountpoint != "":
+            CARD_DIRECTORY =  drive.mountpoint
+            return CARD_DIRECTORY
+
+
+def get_key(card_path):
+    file_path = os.path.join(card_path, "record.txt")
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+        key = lines[-1].strip()
+    return key

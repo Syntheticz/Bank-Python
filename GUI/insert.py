@@ -8,7 +8,7 @@ import time
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from filehandling import CARD_PATH, KEY, read_card
+from filehandling import CARD_PATH, KEY, read_card, get_card_path, get_key
 #Windows specifications
 window = Tk()
 
@@ -54,7 +54,7 @@ def check_removable_drive():
 
     return drives
 
-def get_removable_drive_path(drive_letter):
+def get_removeable_drive_path(drive_letter):
     cmd = "wmic logicaldisk where caption='{}' get name".format(drive_letter)
     output = subprocess.check_output(cmd, shell=True).decode("utf-8")
     lines = output.strip().split("\n")
@@ -86,7 +86,7 @@ def initial_card_check():
     if added_drives:
         print("Card Inserted")
         print("Validating...")
-        drive_path = get_removable_drive_path(added_drives[0])
+        drive_path = get_removeable_drive_path(added_drives[0])
         file_path = f"{drive_path}\\record.txt"
       
         CARD_PATH = file_path 
@@ -113,8 +113,6 @@ def after_init():
         does_exist = True
     
     if does_exist:
-        acc = read_card(CARD_PATH, KEY)
-        print(KEY)
         window.destroy()
         current_directory = os.path.dirname(os.path.abspath(__file__))
         script_path = os.path.join(current_directory, "log_in.py")
