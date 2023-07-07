@@ -2,6 +2,10 @@ from os import path, makedirs
 from objects import Account as ACCOUNT
 from random import randint
 
+import importlib
+import sys
+
+
 import subprocess
 import time
 
@@ -139,49 +143,47 @@ def get_removable_drive_path(drive_letter):
         return drive_path
     return None
 
-def inital_card_check():
+import time
+import subprocess
+from os import path
+
+def initial_card_check():
     # Initial check for removable drives
     global CARD_PATH
 
     previous_drives = check_removable_drive()
-    print("Please Insert Your Card!")
+    print("Please insert Flash Drive...")
 
+    # Wait for a short interval before checking again
+    interval = 0.5  # in seconds
+    time.sleep(interval)
 
-    while True:
-        # Wait for a short interval before checking again
-        interval = 0.5  # in seconds
-        time.sleep(interval)
+    # Check for removable drives
+    current_drives = check_removable_drive()
 
-        # Check for removable drives
-        current_drives = check_removable_drive()
+    # Compare current and previous drives to detect changes
+    added_drives = [drive for drive in current_drives if drive not in previous_drives]
+    removed_drives = [drive for drive in previous_drives if drive not in current_drives]
 
-        # Compare current and previous drives to detect changes
-        added_drives = [drive for drive in current_drives if drive not in previous_drives]
-        removed_drives = [drive for drive in previous_drives if drive not in current_drives]
+    # Handle added and removed drives
+    if added_drives:
+        print("Card Inserted")
+        print("Validating...")
+        drive_path = get_removable_drive_path(added_drives[0])
+        file_path = f"{drive_path}\\record.txt"
+        print(file_path)
+        if not path.isfile(file_path):
+            return False
+        else:   
+            return True
 
+    if removed_drives:
+        print("Please Insert Your Card!")
+        return None
+        
 
-
-        # Handle added and removed drives
-        if added_drives:
-            print("Card Inserted")
-            print("Validating...")
-            drive_path = get_removable_drive_path(added_drives[0])
-            file_path = f"{drive_path}\\record.txt"
-            if not path.isfile(file_path):
-                print("No valid Record. Register New Acc?")
-            else:
-                print("Reading...")
-                
-                CARD_PATH = file_path
-                test_run(read_card(file_path))
-                
-
-        if removed_drives:
-            print("Please Insert Your Card!")
-            # Perform actions for removed drives
-
-        # Update the previous drives list
-        previous_drives = current_drives
+    # Update the previous drives list
+    previous_drives = current_drives
 
 def read_card(file_path):
     global KEY
@@ -212,5 +214,4 @@ def test_run(account : ACCOUNT):
     decrypt_account(account, KEY)
     print("WELCOME, " + account.name)
 
-# inital_card_check()
 
