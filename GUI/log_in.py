@@ -44,9 +44,6 @@ instruct.place(x=370, y=180)
 pin =""
 
 #LOGIN:
-def login(pin):
-
-     return account.login(pin)
 
 # Function for pressing the button
 def press(num):
@@ -86,7 +83,7 @@ def check_input():
         errorlb = Label(window, text="PIN is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
         errorlb.place(x=400, y=280)
     else:
-        if not login(pin):
+        if not account.login(pin):
             errorlb= Label(window, text="PIN is incorrect.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=400, y=280)
         else:
@@ -177,6 +174,7 @@ ok = Button(ok_border, text=' OK ', fg='white', bg='#5AAC33', font='bold',
                     command= check_input, height=1, width=7)
 ok.pack()
 ok_border.place(x=555, y=420)
+
 
 
 

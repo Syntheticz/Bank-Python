@@ -25,7 +25,7 @@ KEY = 5
 def saveAccount(account : ACCOUNT):
     temp = account
     card_path = f"{get_card_path()}\\record.txt"
-    card_key = get_key()
+    
 
     #check if the card is inserted
     if not is_card_inserted:
@@ -145,6 +145,8 @@ def decrypt_account(account : ACCOUNT, key):
     account.account_balance = decrypt_decimal(account.encrypted_account_bal, key)
     account.encrypted_account_bal = "0"
 
+    return account
+
 #This is the same as get_key() but for accounts
 def get_account_from_card(path):
     with open(path, 'r') as file:
@@ -183,11 +185,13 @@ def fetch_card_contents():
     filepath = f"{get_card_path()}\\record.txt"
     if not path.isfile(filepath):
         return None
-    key = get_key(filepath)
-    account = get_account_from_card(filepath)
+    else:
+        key = get_key(filepath)
+        account = get_account_from_card(filepath)
+        return [account,int(key) ]
     
-    # Returns [0] the key [1] the encrypted account object 
+    # Returns: [0] the encrypted account object and  [1] the key 
     # NOTE: You'll be needing to decrypt this using the key provided or use the get_key() instead
-    return [int(key), account]
+    
 
 

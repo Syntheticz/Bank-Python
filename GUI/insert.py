@@ -8,7 +8,7 @@ import time
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from filehandling import CARD_PATH, KEY, read_card, get_card_path, get_key
+from filehandling import CARD_PATH, KEY
 #Windows specifications
 window = Tk()
 

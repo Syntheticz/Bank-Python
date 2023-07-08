@@ -1,25 +1,23 @@
 import random
 from objects import Account
-from filehandling import read_card, fetch_acc, saveAccount, get_card_path, get_key, decrypt_account
+from filehandling import fetch_acc, saveAccount, get_card_path, get_key,  decrypt_account, fetch_card_contents
 from datetime import datetime
 
 #TESTER:
 client = Account()
-client.name= "Alexander Rosete"
-client.account_number= "123456"
-client.encrypted_account_bal = ""
-client.account_balance= 10000.00
-client.PIN = "0000"
-client.isActive = True
-
-
+current_user = Account()
 recipient = Account()
-recipient.name = "Phil Guiang"
-recipient.account_number = ""
-recipient.encrypted_account_bal= ""
-recipient.account_balance = 3000.00
-recipient.PIN= "1234"
-recipient.isActive = True
+current_recipient = 
+
+temp_account_finder = fetch_card_contents()
+current_key = temp_account_finder[1]
+decrypt_accnum = decrypt_account(temp_account_finder[0], temp_account_finder[1])
+current_user = decrypt_accnum
+
+
+
+
+
 
 
 
@@ -126,18 +124,14 @@ def compare_account_bal(amount,user_balance):
 #LOGIN
 
 def login(pin):
-    #RETRIEVE FIRST: CONTENTS OF FLASH DRIVE: records.txt, and decrypt it
-    card_path = get_card_path()
-    acc = read_card (card_path)
-    print(acc)
-    #DECRYPT: 
-    card_key = get_key(card_path)
-
+  
+    
     #RETRIEVE HERE - CLIENT DETAILS using retrieved accountnumber from records.txt, specially client.PIN, function name: fetch_acc()
-    client = Account()
-    client = fetch_acc(client.account_number)
-    decrypt_account(client, card_key)
-    #compare 2 retrieve: 1 from main database, 1 from card, compare the pin
+    
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    client = decrypt_account(enc_client, current_key)
+    
+    #compare pin:
     while True:
         if verify_PIN(client.PIN, pin):
             print("Login successful!")  # Print a message to indicate successful login
@@ -159,22 +153,23 @@ def login(pin):
 
 #TRANSACTION
 
-def get_userBal():
-    #RETRIEVE HERE- the account details to check latest userbalance
-    #BUT FOR TESTING:
-    return round(client.account_balance,2)
+
 
 def deposit(amount):
     #RETRIEVE HERE - retrieve client details, most importantly client.account_balance
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    client = decrypt_account(enc_client, current_key)
     while True:
         amount = float(amount)
         if validate_amount(amount):
             client.account_balance += amount
             print(client.account_balance)
-            break
             #SAVE HERE - update balance of user
+            saveAccount(client)
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             #CHECKSUM HERE
+            break
+            
         else:
             print("Invalid Amount.")
 
@@ -188,8 +183,16 @@ def deposit(amount):
     """
             
 
+def get_userBal():
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    client = decrypt_account(enc_client, current_key)
+    return round(client.account_balance,2)
+
 def withdraw(amount):
     #RETRIEVE HERE - retrieve client details, most importantly client.account_balance
+
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    client = decrypt_account(enc_client, current_key)
     while True:
         
         amount= float(amount)
@@ -197,10 +200,13 @@ def withdraw(amount):
         if validate_amount(amount) and compare_account_bal(amount,client.account_balance):
             client.account_balance -= amount
             print(client.account_balance)
-            break
             #SAVE HERE - update balance of user
-            #LOG HERE - Account: client.account_number, transaction: withdraw, amount: amount
+            saveAccount(client)
+
+            #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             #CHECKSUM HERE
+            break
+ 
         else:
             print("Invalid Amount.")
             break
@@ -215,17 +221,20 @@ def withdraw(amount):
     """
             
 def receiver(account_receiver):
-    #RETRIEVE HERE USING THE account number from account_receiver
-    #FOR TESTING:
-    recipient.account_number = account_receiver
-    print(account_receiver)
-    print("SENDER: " , client.account_balance , "RECIPIENT: " , recipient.account_balance)
-   
+    #RETRIEVE HERE RECEIVER ACCOUNT USING THE account number from account_receiver
+    fetch_acc(account_receiver,)
 
 
     
 def transfer(amount):
+    print(recipient.account_number)
     #RETRIEVE HERE - retrieve client/sender details, most importantly client.account_balance
+    #sender:
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    client = decrypt_account(enc_client, current_key)
+
+    #recipient:
+
     while True:
         
         amount = float(amount)
@@ -278,8 +287,10 @@ def validate_amount(amount):
 def account_summary():
     #RETRIEVE HERE - Account details of user
     #client = retrieved details NOTE: client here is a class
-    #but for testing eto muna:
-
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    #Decrypt encrypted client
+    client = decrypt_account(enc_client, current_key)
+    
     print("Your balance is: ", client.account_balance)
     return client 
 
