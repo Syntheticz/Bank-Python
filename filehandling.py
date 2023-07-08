@@ -20,33 +20,26 @@ CARD_PATH= ""
 
 KEY = 5
 
-def saveAccount(account):
+
+
+def saveAccount(account : ACCOUNT):
     temp = account
+    card_path = f"{get_card_path()}\\record.txt"
+    card_key = get_key()
 
     #check if the card is inserted
     if not is_card_inserted:
         print("Card is not inserted")
         return
 
-    # Cheks if the file exist
-    if not path.isfile(CARD_PATH):
-        print("File is missing")
-        return
-
-    check_acc_card = read_card(CARD_PATH)
-
     #Checks if record exist
-    if check_acc_card is None:
-        print("No Existing Record to retrieve")
-        return
-    
-    check_acc = retrieve_by_account_number(check_acc_card.account_number)
-
-    if check_acc is None:
+    card_acc = get_account_from_card(card_path)
+    if card_acc is None:
         print("Records does not match any of our records must be because the record is tampered or has the wrong card")
         return
 
-    encrypt_account(temp, KEY)
+    key = randint(1, 16)
+    encrypt_account(temp, key)
     
     for PATH in FILEPATH:
         if not is_card_inserted:
@@ -58,15 +51,17 @@ def saveAccount(account):
              with open(f"{PATH}/{FILENAME}", "w") as file:
                 pass
         save(f"{PATH}/{FILENAME}", temp)
+        save_to_card(temp, card_path, key)
+
     
 
-def save_to_card(account : ACCOUNT):
+def save_to_card(account : ACCOUNT, card_path : str, key : int):
     if account is None:
         print("Error")
         return
-    with open(CARD_PATH, "w") as file:
-        file.write(account.to_csv + "\n")
-        file.write()
+    with open(card_path, "w") as file:
+        file.write(f"{account.to_csv()} \n")
+        file.write(str(key))
 
 def save(filepath: str, account: ACCOUNT):
     if not path.isfile(filepath):
@@ -150,41 +145,49 @@ def decrypt_account(account : ACCOUNT, key):
     account.account_balance = decrypt_decimal(account.encrypted_account_bal, key)
     account.encrypted_account_bal = "0"
 
-def read_card(path):
-    card_key = get_key(path)
-
+#This is the same as get_key() but for accounts
+def get_account_from_card(path):
     with open(path, 'r') as file:
         data = file.readline().strip()
         account = ACCOUNT.from_csv(data)
-        retrieved_account : ACCOUNT = retrieve_by_account_number(f"{FILEPATH[0]}\\{FILENAME}", account.account_number)
-        if retrieved_account is None:
+        if account is None:
             return None
-        card_key = get_key(path)
-        print(f"KEY: {card_key}")
-        return retrieved_account
+        return account
         
-def is_card_inserted(file_path):
-    if not path.isfile(file_path):
-        return False
-    else:
-        return True
+def is_card_inserted():
+    filepath = f"{get_card_path()}\\record.txt"
+    return True if not path.isfile(filepath) else False
 
-def fetch_acc(account_number : str):
-    number = swap_chars(account_number, KEY)
+#Fetching acc from ATM
+def fetch_acc(account_number : str, key : int):
+    number = swap_chars(account_number, key)
     return retrieve_by_account_number(f"{FILEPATH[0]}\\{FILENAME}", number)
+    
 
 def get_card_path():
     drives=psutil.disk_partitions()
-
     for drive in drives:
         if 'removable' in drive.opts and drive.mountpoint != "":
             CARD_DIRECTORY =  drive.mountpoint
             return CARD_DIRECTORY
 
-
-def get_key(card_path):
-    file_path = os.path.join(card_path, "record.txt")
+def get_key(file_path):
     with open(file_path, "r") as file:
         lines = file.readlines()
         key = lines[-1].strip()
-    return key
+    #Change the key to int
+    return int(key)
+
+#This should satisfy Card_contents
+def fetch_card_contents():
+    filepath = f"{get_card_path()}\\record.txt"
+    if not path.isfile(filepath):
+        return None
+    key = get_key(filepath)
+    account = get_account_from_card(filepath)
+    
+    # Returns [0] the key [1] the encrypted account object 
+    # NOTE: You'll be needing to decrypt this using the key provided or use the get_key() instead
+    return [int(key), account]
+
+
