@@ -16,6 +16,8 @@ CARD_PATH= ""
 
 KEY = 5
 
+
+
 # Eto gagamitin mo kapag ka i sasave mo yung account pero di nakasaksak
 # Eto kasi di na niya binabago yung key don sa key.txt
 def save_account(account : ACCOUNT, key : int):
@@ -36,12 +38,13 @@ def save_account(account : ACCOUNT, key : int):
         save(f"{PATH}/{FILENAME}", temp, account.account_number, int(rec_key[1]))
 
 
+
 #Eto gagamitin mo lang kapag ka i sasave mo yung current user or kung sino nakasaksak na Card
 #Eto kasi may checking na if kanya ba talagang card yung nakasaksak
 def save_account_current(account : ACCOUNT):
     temp = copy(account)
     card_path = f"{get_card_path()}\\record.txt"
-    prev_key = get_key()
+    prev_key = get_key(card_path)
 
     if not path.isfile(f"ADMIN\\key.txt"):
             with open(f"ADMIN\\key.txt", "w") as file:
@@ -200,7 +203,7 @@ def is_card_inserted(filepath : str):
 #Fetching acc from ATM
 def fetch_acc(account_number : str, key : int):
     number = swap_chars(account_number, key)
-    return retrieve_by_account_number(f"{FILEPATH[0]}\\{FILENAME}", number)
+    return retrieve_by_account_number(f"{FILEPATH[1]}\\{FILENAME}", number)
     
 
 def get_card_path():
@@ -210,7 +213,7 @@ def get_card_path():
             CARD_DIRECTORY =  drive.mountpoint
             return CARD_DIRECTORY
 
-def get_key():
+def get_key(filepath):
     with open(f"{get_card_path()}\\record.txt", "r") as file:
         lines = file.readlines()
         key = lines[-1].strip()
@@ -245,10 +248,16 @@ def retrieve_key(account_number : str):
         for line in file:
             key_string = line.strip()
             pair = key_string.split(",")
-
-            if restore_chars(pair[0], int(pair[1])) == account_number:
+            
+            
+            check_acc_num = restore_chars(pair[0], int(pair[1]))
+            
+            if check_acc_num == account_number:
                 return pair
-        return None
+        
+    return None
+
+
 
 # Under the hood
 def overwrite_key(account_number : str, key : int):

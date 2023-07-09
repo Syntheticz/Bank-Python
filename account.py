@@ -1,6 +1,6 @@
 import random
 from objects import Account
-from filehandling import fetch_acc, saveAccount, get_card_path, get_key,  decrypt_account, fetch_card_contents
+from filehandling import fetch_acc, save_account, save_account_current,  decrypt_account, fetch_card_contents, retrieve_key
 from datetime import datetime
 
 #TESTER:
@@ -8,10 +8,13 @@ client = Account()
 current_user = Account()
 recipient = Account()
 
+
 temp_account_finder = fetch_card_contents()
+
 current_key = temp_account_finder[1]
 decrypt_accnum = decrypt_account(temp_account_finder[0], temp_account_finder[1])
 current_user = decrypt_accnum
+
 
 
 
@@ -164,7 +167,7 @@ def deposit(amount):
             client.account_balance += amount
             print(client.account_balance)
             #SAVE HERE - update balance of user
-            saveAccount(client)
+            save_account_current(client)
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             #CHECKSUM HERE
             break
@@ -200,7 +203,7 @@ def withdraw(amount):
             client.account_balance -= amount
             print(client.account_balance)
             #SAVE HERE - update balance of user
-            saveAccount(client)
+            save_account_current(client)
 
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             #CHECKSUM HERE
@@ -218,36 +221,52 @@ def withdraw(amount):
         CHECKSUM
 
     """
-            
+         
 def receiver(account_receiver):
-    #RETRIEVE HERE RECEIVER ACCOUNT USING THE account number from account_receiver
-    fetch_acc(account_receiver,)
+    global recipient
+    # RETRIEVE KEY ENCRYPTION OF RECIPIENT ACCOUNT
+    key = retrieve_key(account_receiver)
+    print(key)
+    if key is None:
+        return False
+    else:
+        # RETRIEVE HERE RECEIVER ACCOUNT USING the account number from account_receiver
+        current_recipient = fetch_acc(account_receiver, int(key[1]))
+        recipient = decrypt_account(current_recipient, int(key[1]))
+        
+        return True
 
 
+def transfer(amount,recipient_account_number):
     
-def transfer(amount):
-    print(recipient.account_number)
-    #RETRIEVE HERE - retrieve client/sender details, most importantly client.account_balance
-    #sender:
-    enc_client = fetch_acc (current_user.account_number, current_key)
+    # RETRIEVE HERE - retrieve client/sender details, most importantly client.account_balance
+    # sender:
+    enc_client = fetch_acc(current_user.account_number, current_key)
     client = decrypt_account(enc_client, current_key)
 
-    #recipient:
-
+    # recipient:
+    key = retrieve_key(recipient_account_number)
+    current_recipient = fetch_acc(recipient_account_number, int(key[1]))
+    recipient = decrypt_account(current_recipient, int(key[1]))
+    print (recipient)
     while True:
-        
         amount = float(amount)
-        if validate_amount(amount) and compare_account_bal(amount,client.account_balance):
+        if validate_amount(amount) and compare_account_bal(amount, client.account_balance):
             client.account_balance -= amount
             recipient.account_balance += amount
-            print("SENDER: " , client.account_balance , "RECIPIENT: " , recipient.account_balance)
-            #SAVE HERE- updated balance of client and update balance of recipient
-            #LOG HERE- Account: client.account_number, Transaction: Transfer, Amount: amount
-            #CHECKSUM HERE-
+            print("SENDER:", client.account_balance, "RECIPIENT:", recipient.account_balance)
+            # SAVE HERE- updated balance of client and update balance of recipient
+            #save client:
+            save_account_current(client)
+            #save_recipient:
+            save_account(recipient,int(key[1]))
+            # LOG HERE- Account: client.account_number, Transaction: Transfer, Amount: amount
+            # CHECKSUM HERE-
             break
         else:
-            print ("Invalid Amount.")
+            print("Invalid Amount.")
             break
+
         
 
 #VALIDATION
@@ -286,6 +305,7 @@ def validate_amount(amount):
 def account_summary():
     #RETRIEVE HERE - Account details of user
     #client = retrieved details NOTE: client here is a class
+    
     enc_client = fetch_acc (current_user.account_number, current_key)
     #Decrypt encrypted client
     client = decrypt_account(enc_client, current_key)

@@ -41,14 +41,14 @@ instruct.place(x=285, y=180)
 pin =""
 
 def get_receiver():
-    account.receiver(enterPin.get())
+    return account.receiver(enterPin.get())
     
     
     
 # Function for pressing the button
 def press(num):
     global pin
-    if len(pin)<6:
+    if len(pin)<9:
         pin += str(num)
         enterPin.set(pin)
 
@@ -66,11 +66,14 @@ def clear():
     errorlb.config(text="", fg="#E7E6DD")
 
 def next():
-    get_receiver()
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "transfer_2.py")
-    subprocess.run(["python", script_path]) 
+    if not get_receiver():
+        error()
+    else:
+            recipient_acc_num = enterPin.get()
+            window.destroy()
+            current_directory = os.path.dirname(os.path.abspath(__file__))
+            script_path = os.path.join(current_directory, "transfer_2.py")
+            subprocess.run(["python", script_path, recipient_acc_num]) 
 
 def back():
     window.destroy()
@@ -160,7 +163,7 @@ clear_border.place(x=555, y=370)
 
 ok_border = Frame(window, highlightbackground = "#1C6516", highlightthickness = 2, bd=0)
 ok = Button(ok_border, text=' OK ', fg='white', bg='#5AAC33', font='bold',
-                    command=lambda: next() if len(pin) == 6 else error(), height=1, width=7)
+                    command=lambda: next() if len(pin) == 9 else error(), height=1, width=7)
 ok.pack()
 ok_border.place(x=555, y=420)
 

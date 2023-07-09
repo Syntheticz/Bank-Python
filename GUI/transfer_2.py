@@ -39,12 +39,12 @@ instruct.place(x=300, y=180)
 
 #Text Field for Account Number
 money = ""
-
+recipient_account_number = sys.argv[1]
 import account
 
 def get_money():
     amount = transfer.get()
-    account.transfer(amount)
+    account.transfer(amount,recipient_account_number)
 
     
 
