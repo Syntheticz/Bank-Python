@@ -7,7 +7,6 @@ from datetime import datetime
 client = Account()
 current_user = Account()
 recipient = Account()
-current_recipient = 
 
 temp_account_finder = fetch_card_contents()
 current_key = temp_account_finder[1]

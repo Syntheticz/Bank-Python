@@ -51,6 +51,7 @@ class TestCreateAndRead(unittest.TestCase):
 class EncryptionTestCase(unittest.TestCase):
 
     def test_swap_chars(self):
+        
         # Test encryption with key=3
         self.assertEqual(swap_chars("Hello World!", 3), "Khoor#Zruog$")
         self.assertEqual(swap_chars("12345", 3), "45678")

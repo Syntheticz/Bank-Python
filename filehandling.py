@@ -3,6 +3,7 @@ import psutil
 from os import path, makedirs
 from objects import Account as ACCOUNT
 from random import randint
+from copy import copy
 
 import importlib
 import sys
@@ -23,12 +24,12 @@ KEY = 5
 
 
 def saveAccount(account : ACCOUNT):
-    temp = account
+    temp = copy(account)
     card_path = f"{get_card_path()}\\record.txt"
     
 
     #check if the card is inserted
-    if not is_card_inserted:
+    if not is_card_inserted(card_path):
         print("Card is not inserted")
         return
 
@@ -38,9 +39,11 @@ def saveAccount(account : ACCOUNT):
         print("Records does not match any of our records must be because the record is tampered or has the wrong card")
         return
 
-    key = randint(1, 16)
+    #Can be 16 but 10 is safer 
+    key = randint(1, 5)
     encrypt_account(temp, key)
     
+
     for PATH in FILEPATH:
         if not is_card_inserted:
             print("Error!")
@@ -51,7 +54,7 @@ def saveAccount(account : ACCOUNT):
              with open(f"{PATH}/{FILENAME}", "w") as file:
                 pass
         save(f"{PATH}/{FILENAME}", temp)
-        save_to_card(temp, card_path, key)
+    save_to_card(temp, card_path, key)
 
     
 
@@ -156,9 +159,8 @@ def get_account_from_card(path):
             return None
         return account
         
-def is_card_inserted():
-    filepath = f"{get_card_path()}\\record.txt"
-    return True if not path.isfile(filepath) else False
+def is_card_inserted(filepath : str):
+    return False if not path.isfile(filepath) else True
 
 #Fetching acc from ATM
 def fetch_acc(account_number : str, key : int):
@@ -173,8 +175,8 @@ def get_card_path():
             CARD_DIRECTORY =  drive.mountpoint
             return CARD_DIRECTORY
 
-def get_key(file_path):
-    with open(file_path, "r") as file:
+def get_key():
+    with open(f"{get_card_path()}\\record.txt", "r") as file:
         lines = file.readlines()
         key = lines[-1].strip()
     #Change the key to int
@@ -193,5 +195,21 @@ def fetch_card_contents():
     # Returns: [0] the encrypted account object and  [1] the key 
     # NOTE: You'll be needing to decrypt this using the key provided or use the get_key() instead
     
+accounts = [
+    ACCOUNT("123456782", "Jane Smith", "1995-05-10", "5678", "encrypted1", 2000.0, True),
+    ACCOUNT("987654321", "John Doe", "1990-12-15", "4321", "encrypted2", 1500.0, True),
+    ACCOUNT("456789123", "Alice Johnson", "1985-08-25", "9876", "encrypted3", 3000.0, False),
+    ACCOUNT("789123456", "Bob Anderson", "1998-03-05", "6543", "encrypted4", 5000.0, True),
+    ACCOUNT("654321987", "Sarah Davis", "1992-07-01", "8765", "encrypted5", 1000.0, False),
+    ACCOUNT("321654987", "Michael Wilson", "1980-11-20", "3456", "encrypted6", 2500.0, True),
+    ACCOUNT("987123654", "Emily Thompson", "1993-09-12", "2345", "encrypted7", 4000.0, False),
+    ACCOUNT("456321789", "David Brown", "1988-06-08", "7654", "encrypted8", 6000.0, True),
+    ACCOUNT("789456123", "Olivia Miller", "1997-04-18", "5432", "encrypted9", 3500.0, True),
+    ACCOUNT("654789321", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz", "1991-10-30", "8765", "encrypted10", 4500.0, False)
+]
 
-
+while True:
+    for acc in accounts:
+        saveAccount(acc)
+        dacc = decrypt_account(fetch_acc(acc.account_number, get_key()), get_key())
+        print(dacc)

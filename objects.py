@@ -33,6 +33,11 @@ class Account:
     def __str__(self):
         return f"Account(name={self.name}, account_number={self.account_number}, date_of_birth={self.date_of_birth}, PIN={self.PIN}, encrypted_account_bal={self.encrypted_account_bal}, account_balance={self.account_balance}, isActive={'Yes' if self.isActive else 'No'})"
 
+    def __copy__(self):
+        obj = Account(self.account_number, self.name, self.date_of_birth, self.PIN, self.encrypted_account_bal,
+                            self.account_balance, self.isActive)
+        return obj
+    
     def to_csv(self):
         fieldnames = [
             "account_number",
