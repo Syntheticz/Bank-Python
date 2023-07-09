@@ -58,10 +58,10 @@ def next():
     
     global amount, transaction
     gen = objects.DocumentGenerator("receipt/name.pdf")
-    gen.account_number = current_user
+    gen.account_number = current_user.account_number
     gen.amount = amount
     gen.transaction_type = transaction
-    gen.generateReport()
+    gen.generateReceipt()
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "new_trans.py")
