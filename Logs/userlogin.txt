@@ -1,0 +1,5 @@
+User '12345' logged in at [2023-06-29 09:00 AM].
+User '67890' logged in at [2023-06-30 02:15 PM].
+User '12345' logged in at [2023-07-01 11:30 AM].
+User '67890' logged in at [2023-07-02 08:45 AM].
+User '12345' logged in at [2023-07-03 10:30 AM].

@@ -6,7 +6,7 @@ from objects import DocumentGenerator
 
 def run():
     print ("Hello World")
-    gen = DocumentGenerator()
+    gen = DocumentGenerator("report/report.pdf")
 
     gen.generateReport();
 

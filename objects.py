@@ -75,14 +75,14 @@ class TransactionLog:
         self.curr_time = datetime.datetime.now()
         return f"Account Number: {self.account_number} attempts to {self.transaction_type} an invalid amount at [{self.curr_time}]."
 
+
 class DocumentGenerator:
 
-    def __init__(self):
-        self.filename = "r.pdf"
+    def __init__(self, doc_path):
         self.page_width, self.page_height = letter
-        self.canva = canvas.Canvas(self.filename, pagesize=letter)
+        self.canva = canvas.Canvas(doc_path, pagesize=letter)
         self.canva.setFont("Helvetica", 12)
-        self.canva.setLineWidth(1);
+        self.canva.setLineWidth(1)
 
         # Generate a random reference number
         self.reference_number = str(uuid.uuid4())
@@ -134,6 +134,62 @@ class DocumentGenerator:
 
         print("Saved")
 
+    def read_log_files(self):
+        transaction_file = "Logs/transaction.txt"
+        user_login_file = "Logs/userlogin.txt"
+
+        account_details = {}
+
+        # Read transaction logs
+        with open(transaction_file, "r") as transaction_log:
+            for line in transaction_log:
+                # Split the line into fields
+                fields = line.strip().split("|")
+
+                # Extract the account number and transaction details
+                datetime = fields[0].strip().split("]")[0][1:].strip()  # Modified line
+                transaction_type = fields[1].strip().split(":")[1].strip()
+                account_number = fields[2].strip().split(":")[1].strip()
+                amount = fields[3].strip().split(":")[1].strip()
+                
+
+                # Check if the account number exists in the dictionary
+                if account_number not in account_details:
+                    account_details[account_number] = {
+                        "FrequencyUsage": 0,
+                        "Transactions": []
+                    }
+
+                # Append the transaction details to the account
+                account_details[account_number]["Transactions"].append({
+                    "TransactionType": transaction_type,
+                    "Amount": amount,
+                    "DateTime": datetime
+                })
+
+        # Read user login logs
+        with open(user_login_file, "r") as user_login_log:
+            for line in user_login_log:
+                # Split the line into fields
+                fields = line.strip().split("'")
+
+                # Extract the account number and login time
+                account_number = fields[1]
+                login_time = fields[2].strip().split("[")[1].split("]")[0]
+
+                # Check if the account number exists in the dictionary
+                if account_number not in account_details:
+                    account_details[account_number] = {
+                        "FrequencyUsage": 0,
+                        "Transactions": []
+                    }
+
+                # Increment the frequency usage
+                account_details[account_number]["FrequencyUsage"] += 1
+
+        return account_details
+
+
     def generateReport(self) :
         
         self.frequency_usage = 0;
@@ -151,30 +207,7 @@ class DocumentGenerator:
         data = [  
         ]
 
-        # Define the dictionary with account details
-        account_details = {
-            "12345": {
-                "FrequencyUsage": 3,
-                "Transactions": [
-                    {
-                        "TransactionType": "Deposit",
-                        "Amount": 100,
-                        "DateTime": "2023-06-30 12:34:56"
-                    },
-                    {
-                        "TransactionType": "Withdraw",
-                        "Amount": 200,
-                        "DateTime": "2023-07-01 09:00:00"
-                    },
-                    {
-                        "TransactionType": "Transfer",
-                        "Amount": 150,
-                        "DateTime": "2023-07-02 15:30:00"
-                    }
-                ]
-            },
-            
-        }
+        account_details = self.read_log_files()
 
         # Iterate over the records and populate the table data
         for account_number, details in account_details.items():
@@ -197,12 +230,13 @@ class DocumentGenerator:
             data.append([])  # Add an empty row after each account
 
         # Set table style
+        # Set table style
         table_style = TableStyle([
             ("BACKGROUND", (0, 0), (-1, 0), colors.white),
             ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
             ("ALIGN", (0, 0), (-1, -1), "CENTER"),
-            ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-            ("FONTSIZE", (0, 0), (-1, 0), 12),
+            ("FONTNAME", (0, 0), (-1, -1), "Helvetica"),
+            ("FONTSIZE", (0, 0), (-1, -1), 12),
             ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
             ("BACKGROUND", (0, 1), (-1, -1), colors.white),
         ])
@@ -223,7 +257,6 @@ class DocumentGenerator:
 
         # Save the PDF file
         self.canva.save()
-
 
         print("saved")
 
