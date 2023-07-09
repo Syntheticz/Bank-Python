@@ -3,7 +3,26 @@ from tkinter.ttk import Progressbar
 import time
 import subprocess
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import objects
 from PIL import ImageTk, Image
+from account import current_user
+
+
+if os.environ["TRANSACTION"] == "Deposit":
+    amount = os.environ["DEPOSIT_AMOUNT"]
+    transaction = "Deposit"
+elif os.environ["TRANSACTION"] == "Withdraw": 
+    amount = os.environ["WITHDRAW_AMOUNT"]
+    transaction = "Withdraw"   
+elif os.environ["TRANSACTION"] == "Transfer":
+    amount = os.environ["TRANSFER_AMOUNT"]
+    transaction = "Transfer"
+elif os.environ ["TRANSACTION"] == "Balance Inquiry":
+    amount = os.environ ["BALANCE_AMOUNT"]
+    transaction = "Balance Inquiry"
+
 
 
 #Windows specifications
@@ -36,6 +55,13 @@ instruct = Label(window, text="Printing Receipt...", font=("Arial", 16), fg='#16
 instruct.place(x=375, y=230)
 
 def next():
+    
+    global amount, transaction
+    gen = objects.DocumentGenerator("receipt/name.pdf")
+    gen.account_number = current_user
+    gen.amount = amount
+    gen.transaction_type = transaction
+    gen.generateReport()
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "new_trans.py")

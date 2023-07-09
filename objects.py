@@ -99,7 +99,7 @@ class TransactionLog:
         self.remarks = ""
     
     def transactionLog (self) :
-        return f"[{self.timeStamp}] Transaction Type: {self.transactionType} | Account Number: {self.accountNumber} | Amount: P{self.issuedAmount} | Status: {self.remarks}"
+        return f"[{self.timeStamp}] | Transaction Type: {self.transactionType} | Account Number: {self.accountNumber} | Amount: P{self.issuedAmount} | Status: {self.remarks}"
 
     def userLoginLog (self) :
         self.login_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")

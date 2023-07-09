@@ -3,7 +3,7 @@ import subprocess
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
+import filehandling
 import account
 from PIL import ImageTk, Image
 
@@ -51,9 +51,7 @@ def press(denom):
     if len(money)<1:            # User is only allowed to press 1 button
         money += str(denom)
         deposit.set(money)
-        
-        
-        
+
     else:
         error()
 
@@ -126,7 +124,10 @@ def onlyDigit(input):
 
 # Goes to next window and closes current window
 def next():
+    
     account_deposit()
+    os.environ["DEPOSIT_AMOUNT"] = deposit_field.get()
+    os.environ["TRANSACTION"] = "Deposit"
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "loading.py")

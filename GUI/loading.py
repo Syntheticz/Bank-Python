@@ -3,7 +3,11 @@ from tkinter.ttk import Progressbar
 import time
 import subprocess
 import os
+import sys
 from PIL import ImageTk, Image
+
+
+
 
 
 #Windows specifications
@@ -37,6 +41,7 @@ instruct = Label(window, text="Loading Transaction...", font=("Arial", 16), fg='
 instruct.place(x=356, y=230)
 
 def next():
+
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "accSuccess.py")

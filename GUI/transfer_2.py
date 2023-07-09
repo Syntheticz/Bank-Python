@@ -40,6 +40,7 @@ instruct.place(x=300, y=180)
 #Text Field for Account Number
 money = ""
 recipient_account_number = sys.argv[1]
+
 import account
 
 def get_money():
@@ -131,6 +132,8 @@ def onlyDigit(input):
 # Goes to next window and closes current window
 def next():
     get_money()
+    os.environ["TRANSFER_AMOUNT"] = transfer.get()
+    os.environ["TRANSACTION"] = "Transfer"
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "loading.py")

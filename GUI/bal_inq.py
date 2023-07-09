@@ -28,10 +28,12 @@ current_user = Account()
 
 def retrieve():
     global current_user
-    current_user = account.account_summary()
+    current_user = account.balance_inquiry()
 
 # Function to go to Transaction Menu
 def next():
+    os.environ ["TRANSACTION"] = "Balance Inquiry"
+    os.environ ["BALANCE_AMOUNT"] = "0.00"
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "loading_2.py")

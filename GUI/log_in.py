@@ -3,7 +3,7 @@ import subprocess
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
+import filehandling
 import account
 from PIL import ImageTk, Image
 
@@ -82,6 +82,7 @@ def check_input():
     if len(pin) != 4: 
         errorlb = Label(window, text="PIN is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
         errorlb.place(x=400, y=280)
+        filehandling.saveInvalidPasswordLog()
     else:
         if not account.login(pin):
             errorlb= Label(window, text="PIN is incorrect.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")

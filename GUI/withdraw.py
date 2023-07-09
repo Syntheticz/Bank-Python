@@ -127,7 +127,10 @@ def onlyDigit(input):
 
 # Goes to next window and closes current window
 def next():
+    
     account_withdraw()
+    os.environ["WITHDRAW_AMOUNT"] = withdraw_field.get()
+    os.environ["TRANSACTION"] = "Withdraw"
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "loading.py")

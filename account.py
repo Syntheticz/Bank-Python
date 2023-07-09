@@ -1,5 +1,6 @@
 import random
 from objects import Account
+import filehandling
 from filehandling import fetch_acc, save_account, save_account_current,  decrypt_account, fetch_card_contents, retrieve_key
 from datetime import datetime
 
@@ -138,12 +139,14 @@ def login(pin):
         if verify_PIN(client.PIN, pin):
             print("Login successful!")  # Print a message to indicate successful login
             print(client.PIN)  # Print the client details
+            filehandling.saveUserLogin(client.account_number)
             return True
             break
             # Rest of the function logic
             
         else:
             print("You have entered a wrong PIN!")
+            filehandling.saveWrongPasswordLog(client.account_number)
             return False
             break
             
@@ -169,10 +172,11 @@ def deposit(amount):
             #SAVE HERE - update balance of user
             save_account_current(client)
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
-            #CHECKSUM HERE
+            filehandling.saveTransactionLog("Deposit",amount,client.account_number,"Success")
             break
             
         else:
+            filehandling.saveInvalidAmountLog(client.account_number, "Deposit")
             print("Invalid Amount.")
 
     """"
@@ -206,11 +210,12 @@ def withdraw(amount):
             save_account_current(client)
 
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
-            #CHECKSUM HERE
+            filehandling.saveTransactionLog("Withdraw",amount,client.account_number,"Success")
             break
  
         else:
             print("Invalid Amount.")
+            filehandling.saveInvalidAmountLog(client.account_number, "Withdraw")
             break
 
     """"
@@ -258,16 +263,41 @@ def transfer(amount,recipient_account_number):
             # SAVE HERE- updated balance of client and update balance of recipient
             #save client:
             save_account_current(client)
+            #log:
+            filehandling.saveTransactionLog("Transfer",amount,client.account_number,"Success")
             #save_recipient:
             save_account(recipient,int(key[1]))
-            # LOG HERE- Account: client.account_number, Transaction: Transfer, Amount: amount
+            filehandling.saveTransactionLog("Received",amount,recipient.account_number,"Success")
             # CHECKSUM HERE-
             break
         else:
+            filehandling.saveInvalidAmountLog(client.account_number, "Transfer")
             print("Invalid Amount.")
             break
 
-        
+def account_summary():
+    #RETRIEVE HERE - Account details of user
+    #client = retrieved details NOTE: client here is a class
+    
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    #Decrypt encrypted client
+    client = decrypt_account(enc_client, current_key)
+    
+    print("Your balance is: ", client.account_balance)
+    
+    return client 
+
+def balance_inquiry():
+    #RETRIEVE HERE - Account details of user
+    #client = retrieved details NOTE: client here is a class
+    
+    enc_client = fetch_acc (current_user.account_number, current_key)
+    #Decrypt encrypted client
+    client = decrypt_account(enc_client, current_key)
+    
+    print("Your balance is: ", client.account_balance)
+    filehandling.saveTransactionLog("Balance Inquiry",0.00,client.account_number,"Success")
+    return client     
 
 #VALIDATION
 def validate_name(name):
@@ -302,16 +332,7 @@ def validate_amount(amount):
     return False
 
 
-def account_summary():
-    #RETRIEVE HERE - Account details of user
-    #client = retrieved details NOTE: client here is a class
-    
-    enc_client = fetch_acc (current_user.account_number, current_key)
-    #Decrypt encrypted client
-    client = decrypt_account(enc_client, current_key)
-    
-    print("Your balance is: ", client.account_balance)
-    return client 
+ 
 
 
 
