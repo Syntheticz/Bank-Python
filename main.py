@@ -3,7 +3,6 @@ from objects import DocumentGenerator
 
 
 
-
 def run():
     print ("Hello World")
     gen = DocumentGenerator("report/report.pdf")
