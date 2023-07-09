@@ -2,6 +2,10 @@ from tkinter import *
 import subprocess
 import os
 from PIL import ImageTk, Image
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import filehandling
 
 
 #Windows specifications
@@ -19,9 +23,16 @@ screen_height = window.winfo_screenheight()
 
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
-name = "Si Ano"
-accNum = "123456"
-currBal = "1009099"
+
+card_path = f"{filehandling.get_card_path()}\\record.txt"
+
+acc = filehandling.get_account_from_card(card_path)
+key = filehandling.get_key(card_path)
+filehandling.decrypt_account(acc, key)
+
+name = acc.name
+accNum = acc.account_number
+currBal = str(acc.account_balance)
 
 def next():
     window.destroy()
@@ -31,7 +42,7 @@ def next():
 
 def hide_accNum():
     global accNum 
-    accNum = "***" + accNum[3:]
+    accNum = "******" + accNum[6:]
 
 hide_accNum()
 
@@ -47,7 +58,7 @@ namelb.grid(row=0, column=0, sticky="nsew")
 accNumlb = Label(mid, text=("Account Number: " + str(accNum)), font=("Arial", 15), fg='#162F65', bg="#E7E6DD")
 accNumlb.grid(row=1, column=0, sticky="nsew")
 
-ballb = Label(mid, text=("Current Balance: " + currBal + ".00"), font=("Arial", 15), fg='#162F65', bg="#E7E6DD")
+ballb = Label(mid, text=("Current Balance: " + currBal + ""), font=("Arial", 15), fg='#162F65', bg="#E7E6DD")
 ballb.grid(row=2, column=0, sticky="nsew")
 
 mid.grid_rowconfigure(0, weight=1)

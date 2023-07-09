@@ -12,3 +12,6 @@ In order to run our application you need to run these following commands or inst
 ```python
     pip install psutil
 ```
+```python
+    pip install reportlab
+```

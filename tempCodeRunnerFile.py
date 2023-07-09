@@ -1,2 +1,1 @@
-
-    save_account(account, 1)
+    run()

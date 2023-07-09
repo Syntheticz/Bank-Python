@@ -39,7 +39,44 @@ def save_account(account : ACCOUNT, key : int):
                 pass
         save(f"{PATH}/{FILENAME}", temp, account.account_number, int(rec_key[1]))
 
+def save_account_new(account : ACCOUNT):
+    temp = copy(account)
+    card_path = f"{get_card_path()}\\record.txt"
+    
 
+    if not path.isfile(f"ADMIN\\key.txt"):
+            with open(f"ADMIN\\key.txt", "w") as file:
+                pass
+    
+    #check if the card is inserted
+    if not is_card_inserted(card_path):
+        with open(card_path, "w") as file:
+            pass
+
+
+    #Can be 16 but 5 is by far the safest
+    key = randint(1, 5)
+    encrypt_account(temp, key)
+    
+    
+    for PATH in FILEPATH:
+        if not is_card_inserted:
+            print("Error!")
+            return
+        if not path.exists(PATH):
+            makedirs(PATH)
+        if not path.isfile(f"{PATH}/{FILENAME}"):
+             with open(f"{PATH}/{FILENAME}", "w") as file:
+                pass
+        save(f"{PATH}/{FILENAME}", temp, account.account_number, 0)
+    
+    if retrieve_key(account.account_number) is not None:
+        overwrite_key(account.account_number, key)
+    else:
+        with open(f"ADMIN\\key.txt", "a") as file:
+            file.write(f"{swap_chars(account.account_number, key)},{str(key)}\n")
+
+    save_to_card(temp, card_path, key)
 
 #Eto gagamitin mo lang kapag ka i sasave mo yung current user or kung sino nakasaksak na Card
 #Eto kasi may checking na if kanya ba talagang card yung nakasaksak

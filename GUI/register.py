@@ -2,9 +2,15 @@ from tkinter import *
 import subprocess
 import os
 import re
+import sys
 import datetime
 from PIL import ImageTk, Image
 from tkcalendar import Calendar, DateEntry
+import random
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from objects import Account
+from filehandling import save_account_new
 
 #Windows specifications
 window = Tk()
@@ -90,9 +96,21 @@ def error():
     else:
         next()
 
-def next():
-    pass
+def generate_account_number():
+    return str(random.randint(1, 999999999)).zfill(9)
 
+def next():
+    name = nm_field.get()
+    bd = str(bd_field.get_date())
+    pin = pin2
+    number = generate_account_number()
+    account = Account(number, name, bd, pin, "encrypted", 0.00, True)
+    print(number)
+    save_account_new(account)
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "regSuccess.py")
+    subprocess.run(["python", script_path])
 
 # Insert Instructions for User
 instruct = Label(window, text="Please enter account information.", font=("Arial", 16), fg='#162F65', bg="#E7E6DD")

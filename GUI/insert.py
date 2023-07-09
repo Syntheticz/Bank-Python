@@ -97,7 +97,6 @@ def initial_card_check():
             return 1
 
     if removed_drives:
-        print("Removed Card")
         return 3
         
 
@@ -123,6 +122,7 @@ def after_init():
         current_directory = os.path.dirname(os.path.abspath(__file__))
         script_path = os.path.join(current_directory, "register.py")
         subprocess.run(["python", script_path])
+    
     
     window.after(100, after_init)
 
