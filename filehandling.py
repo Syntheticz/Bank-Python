@@ -1,7 +1,9 @@
 import os
 import psutil
+import datetime
 from os import path, makedirs
 from objects import Account as ACCOUNT
+from objects import TransactionLog
 from random import randint
 from copy import copy
 
@@ -113,9 +115,76 @@ def save(filepath: str, account: ACCOUNT, prev_account_number : str, key : int):
         with open(filepath, "a") as file:
             acc_str = f"{account.to_csv()}\n"
             file.write(acc_str)
-       
-        
+
+# SAVE LOGS
+def saveTransactionLog(transactionType,issuedAmount,accountNumber,remarks):
     
+    log = TransactionLog()
+    log.accountNumber = accountNumber
+    log.transactionType = transactionType
+    log.issuedAmount = issuedAmount
+    log.remarks = remarks
+    
+    log.timeStamp = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")
+
+    log_string = log.transactionLog();
+    with open("Logs/transaction.txt", "a") as file:
+        file.write(log_string + "\n")
+
+def saveUserLogin(accountNumber): 
+
+    log = TransactionLog()
+    log.accountNumber = accountNumber
+    
+    log_string = log.userLoginLog()
+
+    with open("Logs/userlogin.txt", "a") as file:
+        file.write(log_string + "\n")
+
+def saveUserLogout(accountNumber):
+    
+    log = TransactionLog()
+    log.accountNumber = accountNumber
+    
+    log_string = log.userLogoutLog()
+
+    with open("Logs/userlogout.txt", "a") as file:
+        file.write(log_string + "\n")
+
+# SAVE ERROR LOGS
+
+def saveInvalidUsernameLog():
+    log = TransactionLog()
+    with open("Logs/invalidusernamelog.txt", "a") as file:
+        file.write(log.invalidUsernameLog() + "\n")
+    
+def saveInvalidPasswordLog():
+    log = TransactionLog()
+    with open("Logs/invalidpasswordlog.txt", "a") as file:
+        file.write(log.invalidPasswordLog() + "\n")
+
+def saveWrongPasswordLog(accountNumber):
+ 
+    log = TransactionLog()
+    log.accountNumber = accountNumber
+    
+    log_string = log.wrongPasswordLog()
+
+    with open("Logs/wrongpasswordlog.txt", "a") as file:
+        file.write(log_string + "\n")
+
+def saveInvalidAmountLog(accountNumber, transactionType):
+    
+    log = TransactionLog()
+    log.accountNumber = accountNumber
+    log.transactionType = transactionType
+    
+    log_string = log.invalidAmountLog()
+
+    with open("Logs/invalidamountlog.txt", "a") as file:
+        file.write(log_string + "\n")
+
+
 def retrieve_by_account_number(filepath: str, account_number: str):
     if not path.isfile(filepath):
         return None

@@ -93,40 +93,39 @@ class Account:
 class TransactionLog:
     def __init__ (self):
         self.transactionType = TransactionType
-        self.transactionID = "" # Must be unique
         self.timeStamp = ""
         self.issuedAmount = 0.0
         self.accountNumber = ""
         self.remarks = ""
     
     def transactionLog (self) :
-        return f"[{self.time_stamp}] Transaction Type: {self.transaction_type} | Account Number: {self.account_number} | Amount: P{self.issued_amount} | Status: {self.remarks}"
+        return f"[{self.timeStamp}] Transaction Type: {self.transactionType} | Account Number: {self.accountNumber} | Amount: P{self.issuedAmount} | Status: {self.remarks}"
 
     def userLoginLog (self) :
-        self.login_time = datetime.datetime.now()
-        return f"User '{self.account_number}' logged in at [{self.curr_time}]."
+        self.login_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")
+        return f"User '{self.accountNumber}' logged in at [{self.login_time}]."
     
     def userLogoutLog (self) :
-        self.logout_time = datetime.datetime.now()
-        return f"User '{self.account_number}' logged out at [{self.curr_time}]."
+        self.logout_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")
+        return f"User '{self.accountNumber}' logged out at [{self.logout_time}]."
 
     # Error Logs
 
     def invalidUsernameLog (self) :
-        self.curr_time = datetime.datetime.now()
+        self.curr_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")
         return f"Invalid Username at [{self.curr_time}]."
 
     def invalidPasswordLog (self) :
-        self.curr_time = datetime.datetime.now()
+        self.curr_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")
         return f"Invalid Password at [{self.curr_time}]."
 
     def wrongPasswordLog (self) :
-        self.curr_time = datetime.datetime.now()
-        return f"Incorrect password for Account number: {self.account_number} at [{self.curr_time}]."
+        self.curr_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")
+        return f"Incorrect password for Account number: {self.accountNumber} at [{self.curr_time}]."
 
     def invalidAmountLog (self) :
-        self.curr_time = datetime.datetime.now()
-        return f"Account Number: {self.account_number} attempts to {self.transaction_type} an invalid amount at [{self.curr_time}]."
+        self.curr_time = datetime.datetime.now().strftime("%Y-%m-%d %I:%M %p")    
+        return f"Account Number: {self.accountNumber} attempts to {self.transactionType} an invalid amount at [{self.curr_time}]."
 
 
 class DocumentGenerator:
@@ -205,7 +204,7 @@ class DocumentGenerator:
         data = [  
         ]
         from filehandling import read_log_files
-        
+
         account_details = read_log_files()
 
         # Iterate over the records and populate the table data
