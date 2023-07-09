@@ -5,14 +5,9 @@ from objects import Account as ACCOUNT
 from random import randint
 from copy import copy
 
-import importlib
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-
-
-import subprocess
-import time
 
 
 FILENAME = "Records.txt"
@@ -21,28 +16,13 @@ CARD_PATH= ""
 
 KEY = 5
 
-
-
-def saveAccount(account : ACCOUNT):
+# Eto gagamitin mo kapag ka i sasave mo yung account pero di nakasaksak
+# Eto kasi di na niya binabago yung key don sa key.txt
+def save_account(account : ACCOUNT, key : int):
     temp = copy(account)
-    card_path = f"{get_card_path()}\\record.txt"
+    rec_key = retrieve_key(account.account_number)
     
-
-    #check if the card is inserted
-    if not is_card_inserted(card_path):
-        print("Card is not inserted")
-        return
-
-    #Checks if record exist
-    card_acc = get_account_from_card(card_path)
-    if card_acc is None:
-        print("Records does not match any of our records must be because the record is tampered or has the wrong card")
-        return
-
-    #Can be 16 but 10 is safer 
-    key = randint(1, 5)
     encrypt_account(temp, key)
-    
 
     for PATH in FILEPATH:
         if not is_card_inserted:
@@ -53,10 +33,60 @@ def saveAccount(account : ACCOUNT):
         if not path.isfile(f"{PATH}/{FILENAME}"):
              with open(f"{PATH}/{FILENAME}", "w") as file:
                 pass
-        save(f"{PATH}/{FILENAME}", temp)
+        save(f"{PATH}/{FILENAME}", temp, account.account_number, int(rec_key[1]))
+
+
+#Eto gagamitin mo lang kapag ka i sasave mo yung current user or kung sino nakasaksak na Card
+#Eto kasi may checking na if kanya ba talagang card yung nakasaksak
+def save_account_current(account : ACCOUNT):
+    temp = copy(account)
+    card_path = f"{get_card_path()}\\record.txt"
+    prev_key = get_key()
+
+    if not path.isfile(f"ADMIN\\key.txt"):
+            with open(f"ADMIN\\key.txt", "w") as file:
+                pass
+    
+    #check if the card is inserted
+    if not is_card_inserted(card_path):
+        print("Card is not inserted")
+        return
+
+    #Checks if record exist
+    card_acc = get_account_from_card(card_path)
+    if card_acc is None:
+        print("Records does not match any of our records must be because the record is tampered or has the wrong card")
+        return
+    
+    en_acc = swap_chars(account.account_number, prev_key)
+    if retrieve_by_account_number(f"{FILEPATH[1]}/{FILENAME}", en_acc) is None:
+        print("Records does not match any of our records must be because the record is tampered or has the wrong card")
+        return
+
+    #Can be 16 but 5 is by far the safest
+    key = randint(1, 5)
+    encrypt_account(temp, key)
+    
+    
+    for PATH in FILEPATH:
+        if not is_card_inserted:
+            print("Error!")
+            return
+        if not path.exists(PATH):
+            makedirs(PATH)
+        if not path.isfile(f"{PATH}/{FILENAME}"):
+             with open(f"{PATH}/{FILENAME}", "w") as file:
+                pass
+        save(f"{PATH}/{FILENAME}", temp, account.account_number, prev_key)
+    
+    if retrieve_key(account.account_number) is not None:
+        overwrite_key(account.account_number, key)
+    else:
+        with open(f"ADMIN\\key.txt", "a") as file:
+            file.write(f"{swap_chars(account.account_number, key)},{str(key)}\n")
+
     save_to_card(temp, card_path, key)
 
-    
 
 def save_to_card(account : ACCOUNT, card_path : str, key : int):
     if account is None:
@@ -66,12 +96,15 @@ def save_to_card(account : ACCOUNT, card_path : str, key : int):
         file.write(f"{account.to_csv()} \n")
         file.write(str(key))
 
-def save(filepath: str, account: ACCOUNT):
+def save(filepath: str, account: ACCOUNT, prev_account_number : str, key : int):
+
     if not path.isfile(filepath):
         with open(filepath, "w") as file:
             pass
-
-    existing_account = retrieve_by_account_number(filepath, account.account_number)
+    
+    
+    number = swap_chars(prev_account_number, key)
+    existing_account = retrieve_by_account_number(filepath, number)
     if existing_account is not None:
         # Overwrite the specific record
         overwrite_record(filepath, existing_account, account)
@@ -80,7 +113,9 @@ def save(filepath: str, account: ACCOUNT):
         with open(filepath, "a") as file:
             acc_str = f"{account.to_csv()}\n"
             file.write(acc_str)
-
+       
+        
+    
 def retrieve_by_account_number(filepath: str, account_number: str):
     if not path.isfile(filepath):
         return None
@@ -194,9 +229,60 @@ def fetch_card_contents():
     
     # Returns: [0] the encrypted account object and  [1] the key 
     # NOTE: You'll be needing to decrypt this using the key provided or use the get_key() instead
+
+
+# Eto gamitin mo pag ka mag reretrieve ka ng key ng receipient mo
+# return : ["Encrypted account number", key] or None kapag wala
+# NOTE: You must use unencrypted account number otherwire it will always FAIL 
+# NOTE: Also id you want to use the key you'll need to convert it to int 
+# If you found that annoying change the code as you see fit just notify me
+
+def retrieve_key(account_number : str):
+    if not path.isfile(f"ADMIN\\key.txt"):
+        return
     
+    with open(f"ADMIN\\key.txt", "r") as file:
+        for line in file:
+            key_string = line.strip()
+            pair = key_string.split(",")
+
+            if restore_chars(pair[0], int(pair[1])) == account_number:
+                return pair
+        return None
+
+# Under the hood
+def overwrite_key(account_number : str, key : int):
+    lines = []
+
+    is_updated = False
+
+    with open(f"ADMIN\\key.txt", "r") as file:
+        for line in file:
+            key_string = line.strip()
+            pair = key_string.split(",")
+
+            if restore_chars(pair[0], int(pair[1])) == account_number:
+                acc_str = swap_chars(account_number, key)
+                lines.append(f"{acc_str},{key}")
+                is_updated = True
+            else:
+                lines.append(key_string)
+    
+    if len(lines) == 0:
+        return None
+
+    lines[len(lines) - 1 ] += "\n"
+
+    if is_updated:
+        with open(f"ADMIN\\key.txt", "w") as file:
+            write_str = "\n".join(lines)
+            file.write(write_str)
+
+        return None
+
+#sample accounts
 accounts = [
-    ACCOUNT("123456782", "Jane Smith", "1995-05-10", "5678", "encrypted1", 2000.0, True),
+    ACCOUNT("123456782", "Jane Smith", "1995-05-10", "5678", "encrypted1", 4020.0, True),
     ACCOUNT("987654321", "John Doe", "1990-12-15", "4321", "encrypted2", 1500.0, True),
     ACCOUNT("456789123", "Alice Johnson", "1985-08-25", "9876", "encrypted3", 3000.0, False),
     ACCOUNT("789123456", "Bob Anderson", "1998-03-05", "6543", "encrypted4", 5000.0, True),
@@ -208,8 +294,6 @@ accounts = [
     ACCOUNT("654789321", "ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz", "1991-10-30", "8765", "encrypted10", 4500.0, False)
 ]
 
-while True:
-    for acc in accounts:
-        saveAccount(acc)
-        dacc = decrypt_account(fetch_acc(acc.account_number, get_key()), get_key())
-        print(dacc)
+
+    
+

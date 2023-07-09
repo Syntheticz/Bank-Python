@@ -1,3 +1,2 @@
-while True:
-#     time.sleep(delay)
-#     print("Removable drives:")
+
+    save_account(account, 1)
