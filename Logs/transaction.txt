@@ -1,0 +1,10 @@
+[2023-06-29 09:12 AM] | Transaction Type: Deposit | Account Number: 12345 | Amount: P100.0 | Status: Successful
+[2023-06-30 02:30 PM] | Transaction Type: Withdraw | Account Number: 67890 | Amount: P200.0 | Status: Successful
+[2023-07-01 11:45 AM] | Transaction Type: Transfer | Account Number: 12345 | Amount: P150.0 | Status: Successful
+[2023-07-09 11:58 PM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:03 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:04 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:05 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:05 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:07 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:07 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
