@@ -127,7 +127,62 @@ def retrieve_by_account_number(filepath: str, account_number: str):
             if account.account_number == account_number:
                 return account
         return None
-    
+
+# RETRIEVING LOG FILE RECORDS
+def read_log_files():
+        transaction_file = "Logs/transaction.txt"
+        user_login_file = "Logs/userlogin.txt"
+
+        account_details = {}
+
+        # Read transaction logs
+        with open(transaction_file, "r") as transaction_log:
+            for line in transaction_log:
+                # Split the line into fields
+                fields = line.strip().split("|")
+
+                # Extract the account number and transaction details
+                datetime = fields[0].strip().split("]")[0][1:].strip()  # Modified line
+                transaction_type = fields[1].strip().split(":")[1].strip()
+                account_number = fields[2].strip().split(":")[1].strip()
+                amount = fields[3].strip().split(":")[1].strip()
+                
+
+                # Check if the account number exists in the dictionary
+                if account_number not in account_details:
+                    account_details[account_number] = {
+                        "FrequencyUsage": 0,
+                        "Transactions": []
+                    }
+
+                # Append the transaction details to the account
+                account_details[account_number]["Transactions"].append({
+                    "TransactionType": transaction_type,
+                    "Amount": amount,
+                    "DateTime": datetime
+                })
+
+        # Read user login logs
+        with open(user_login_file, "r") as user_login_log:
+            for line in user_login_log:
+                # Split the line into fields
+                fields = line.strip().split("'")
+
+                # Extract the account number and login time
+                account_number = fields[1]
+                login_time = fields[2].strip().split("[")[1].split("]")[0]
+
+                # Check if the account number exists in the dictionary
+                if account_number not in account_details:
+                    account_details[account_number] = {
+                        "FrequencyUsage": 0,
+                        "Transactions": []
+                    }
+
+                # Increment the frequency usage
+                account_details[account_number]["FrequencyUsage"] += 1
+
+        return account_details
 
 def overwrite_record(filepath: str, existing_account: ACCOUNT, new_account: ACCOUNT):
     lines = []
