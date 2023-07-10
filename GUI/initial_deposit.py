@@ -3,14 +3,16 @@ import subprocess
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import filehandling
 import account
 from PIL import ImageTk, Image
+
 
 
 #Windows specifications
 window = Tk()
 
-window.title("Withdraw")
+window.title("Deposit")
 window.configure(background = "#E7E6DD")
 window.resizable(False, False)
 
@@ -23,34 +25,33 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Logo
-
 script_dir = os.path.dirname(os.path.abspath('GUI/new.png'))
 image_path = os.path.join(script_dir, 'new.png')
 image = Image.open(image_path)
-
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
 photo_label.place(x=350, y=20)
 
 # Insert Instructions for User
-instruct = Label(window, text="Please enter money to withdraw.", font=("Arial", 16), fg='#162F65', bg="#E7E6DD")
+instruct = Label(window, text="Please enter money to deposit.", font=("Arial", 16), fg='#162F65', bg="#E7E6DD")
 instruct.place(x=300, y=180)
 
 #Text Field for Account Number
 money = ""
 
-#Deposit Logic
-def account_withdraw():
-    amount = withdraw.get()
-    account.withdraw(amount)
+#Deposit
+def account_deposit():
+    amount = deposit.get()
+    account.deposit(amount)
 
 # Function for pressing the button
 def press(denom):
     global money
     if len(money)<1:            # User is only allowed to press 1 button
         money += str(denom)
-        withdraw.set(money)
+        deposit.set(money)
+
     else:
         error()
 
@@ -58,8 +59,8 @@ def press(denom):
 def error():
     global errorlb
 
-    if withdraw.get().isdigit() or input == "":
-        num = int(withdraw.get())
+    if deposit.get().isdigit() or input == "":
+        num = int(deposit.get())
         if len(money)>1:
             errorlb = Label(window, text="Press only ONE denomination.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=336, y=280)
@@ -72,9 +73,6 @@ def error():
         elif num % 100 != 0:
             errorlb = Label(window, text="Amount should only be multiples of 100.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=305, y=280)
-        elif num > account.get_userBal():
-            errorlb = Label(window, text="Amount is greater than current balance.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-            errorlb.place(x=305, y=280) 
         else:
             errorlb = Label(window, text="Input is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
             errorlb.place(x=400, y=280)
@@ -87,32 +85,34 @@ def error():
 def clear():
     global money
     money = ""
-    withdraw.set("")
+    deposit.set("")
     errorlb.config(text="", fg="#E7E6DD")   # Clears error message
     
 # Function when 'custon' button is clicked
 def custom():
     global money
     money = ""
-    withdraw.set("")
+    deposit.set("")
     valid_input = (window.register(onlyDigit), '%P')
-    withdraw_field.configure(state='normal', validate='key', validatecommand=valid_input)    # Allows users to edit the text field
+    deposit_field.configure(state='normal', validate='key', validatecommand=valid_input)    # Allows users to edit the text field
+    
 
 # Validates user input   
 def check_input():
     global errorlb
-    custom_input = withdraw_field.get()
+    custom_input = deposit_field.get()
 
     num = int(custom_input)
     if custom_input.startswith("0"):
         errorlb = Label(window, text="Input can not start with 0.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
         errorlb.place(x=360, y=280)
-    elif num > account.get_userBal():
-            errorlb = Label(window, text="Amount is greater than current balance.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-            errorlb.place(x=305, y=280) 
-    elif num%100==0 and num<50000:
-        withdraw.set(custom_input)
-        # if you need to access the value of 'withdraw' use withdraw.get()
+    elif num < 3000:
+        errorlb = Label(window, text="Initial deposit is minimum 3000.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=360, y=280)
+    elif num >= 3000 and num < 50000:
+        deposit.set(custom_input)
+        
+        # if you need to access the value of 'deposit' use deposit.get()
         next()
     else:
         error()
@@ -128,63 +128,50 @@ def onlyDigit(input):
 # Goes to next window and closes current window
 def next():
     
-    account_withdraw()
-    os.environ["WITHDRAW_AMOUNT"] = withdraw_field.get()
-    os.environ["TRANSACTION"] = "Withdraw"
+    account_deposit()
+    os.environ["DEPOSIT_AMOUNT"] = deposit_field.get()
+    os.environ["TRANSACTION"] = "Deposit"
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "loading.py")
+    script_path = os.path.join(current_directory, "regSuccess.py")
     subprocess.run(["python", script_path]) 
 
 def back():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "trans_menu.py")
+    script_path = os.path.join(current_directory, "register.py")
     subprocess.run(["python", script_path])
 
 #Text Field Specifications
-withdraw = StringVar()
+deposit = StringVar()
 entry_font = ("Arial", 14) 
-withdraw_field = Entry(window, textvariable=withdraw, width=20, font=entry_font, state='readonly',      # Does not allow users to edit text field
-                       justify="center", fg='#162F65')
-withdraw_field.place(x=335, y=225)
+deposit_field = Entry(window, textvariable=deposit, width=20, font=entry_font, state='readonly',      # Does not allow users to edit text field
 
-# Withdraw Denominations 
-button500_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
-button500 = Button(button500_border, text=' 500 ', fg='#162F65', bg='#E7E6DD', font='bold', activebackground='#3361AC', activeforeground='white',
-                 command=lambda: press(500), height=1, width=7)
-button500.pack()
-button500_border.place(x=255, y=320)
 
-button1000_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
-button1000 = Button(button1000_border, text=' 1000 ', fg='#162F65', bg='#E7E6DD', font='bold', activebackground='#3361AC', activeforeground='white',
-                 command=lambda: press(1000), height=1, width=7)
-button1000.pack()
-button1000_border.place(x=355, y=320)
+                   justify="center", fg='#162F65')
 
-button2000_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
-button2000 = Button(button2000_border, text=' 2000 ', fg='#162F65', bg='#E7E6DD', font='bold', activebackground='#3361AC', activeforeground='white',
-                 command=lambda: press(2000), height=1, width=7)
-button2000.pack()
-button2000_border.place(x=455, y=320)
+deposit_field.place(x=335, y=225)
+
+# Deposit Denominations 
+
 
 button3000_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
 button3000 = Button(button3000_border, text=' 3000 ', fg='#162F65', bg='#E7E6DD', font='bold', activebackground='#3361AC', activeforeground='white',
                  command=lambda: press(3000), height=1, width=7)
 button3000.pack()
-button3000_border.place(x=255, y=370)
+button3000_border.place(x=255, y=320)
 
 button5000_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
 button5000 = Button(button5000_border, text=' 5000 ', fg='#162F65', bg='#E7E6DD', font='bold', activebackground='#3361AC', activeforeground='white',
                  command=lambda: press(5000), height=1, width=7)
 button5000.pack()
-button5000_border.place(x=355, y=370)
+button5000_border.place(x=355, y=320)
 
 button10000_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
 button10000 = Button(button10000_border, text=' 10,000 ', fg='#162F65', bg='#E7E6DD', font='bold', activebackground='#3361AC', activeforeground='white',
                  command=lambda: press(10000), height=1, width=7)
 button10000.pack()
-button10000_border.place(x=455, y=370)
+button10000_border.place(x=455, y=320)
 
 buttonCust_border = Frame(window, highlightbackground = "#162F65", highlightthickness = 2, bd=0)
 buttonCust = Button(buttonCust_border, text=' CUSTOM ', fg='#162F65', bg='#E7E6DD', font='bold', activebackground='#3361AC', activeforeground='white',

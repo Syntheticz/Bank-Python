@@ -1,6 +1,9 @@
 from tkinter import *
 import subprocess
 import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import account
 from PIL import ImageTk, Image
 
 
@@ -20,7 +23,11 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Logo
-image = Image.open("C:/Users/simon/OneDrive/Desktop/school/progs/Second Year/Python/BankSystem/new.png")
+
+script_dir = os.path.dirname(os.path.abspath('GUI/new.png'))
+image_path = os.path.join(script_dir, 'new.png')
+image = Image.open(image_path)
+
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
@@ -33,18 +40,30 @@ instruct.place(x=285, y=180)
 #Text Field for Account Number
 pin =""
 
+def get_receiver():
+    return account.receiver(enterPin.get())
+    
+    
+    
 # Function for pressing the button
 def press(num):
     global pin
-    if len(pin)<6:
+    if len(pin)<9:
         pin += str(num)
         enterPin.set(pin)
 
 # Function that shows error message if PIN is invalid
-def error():
+def error(x):
     global errorlb
-    errorlb = Label(window, text="PIN is invalid.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-    errorlb.place(x=400, y=280)
+
+    
+    if x == "1":
+        errorlb = Label(window, text="You cannot transfer on your own account.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=400, y=280)
+    else:
+        errorlb = Label(window, text="Invalid Account Number.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=400, y=280)
+
 
 # Function to clear contents in text field
 def clear():
@@ -54,10 +73,18 @@ def clear():
     errorlb.config(text="", fg="#E7E6DD")
 
 def next():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "transfer_2.py")
-    subprocess.run(["python", script_path]) 
+    if enterPin.get() == account.current_user:
+        print(enterPin.get(), account.current_user.account_number)
+        error("1")
+    if not get_receiver():
+        error("2")
+
+    else:
+            recipient_acc_num = enterPin.get()
+            window.destroy()
+            current_directory = os.path.dirname(os.path.abspath(__file__))
+            script_path = os.path.join(current_directory, "transfer_2.py")
+            subprocess.run(["python", script_path, recipient_acc_num]) 
 
 def back():
     window.destroy()
@@ -147,7 +174,7 @@ clear_border.place(x=555, y=370)
 
 ok_border = Frame(window, highlightbackground = "#1C6516", highlightthickness = 2, bd=0)
 ok = Button(ok_border, text=' OK ', fg='white', bg='#5AAC33', font='bold',
-                    command=lambda: next() if len(pin) == 6 else error(), height=1, width=7)
+                    command=lambda: next() if len(pin) == 9 else error(2), height=1, width=7)
 ok.pack()
 ok_border.place(x=555, y=420)
 

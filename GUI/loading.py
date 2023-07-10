@@ -3,7 +3,11 @@ from tkinter.ttk import Progressbar
 import time
 import subprocess
 import os
+import sys
 from PIL import ImageTk, Image
+
+
+
 
 
 #Windows specifications
@@ -22,7 +26,11 @@ screen_height = window.winfo_screenheight()
 window.geometry("{}x{}+{}+{}".format(window_width, window_height, 318, 100))
 
 # Logo
-image = Image.open("C:/Users/simon/OneDrive/Desktop/school/progs/Second Year/Python/BankSystem/new.png")
+
+script_dir = os.path.dirname(os.path.abspath('GUI/new.png'))
+image_path = os.path.join(script_dir, 'new.png')
+image = Image.open(image_path)
+
 photo_label = Label(window, bg="#E7E6DD")
 photo = ImageTk.PhotoImage(image)
 photo_label.config(image=photo)
@@ -33,6 +41,7 @@ instruct = Label(window, text="Loading Transaction...", font=("Arial", 16), fg='
 instruct.place(x=356, y=230)
 
 def next():
+
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "accSuccess.py")
@@ -46,7 +55,7 @@ def start_loading():
 def stop():
     progress.stop()
     next()
-    window.destroy()
+    
 
 
 progress = Progressbar(window, orient=HORIZONTAL, length = 300, mode='determinate')

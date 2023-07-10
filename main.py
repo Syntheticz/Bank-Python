@@ -1,10 +1,11 @@
-from objects import Account
-
-
+import random
+from objects import DocumentGenerator
+from GUI import insert
 
 
 def run():
-    print ("Hello World")
+    pass
+    
 
 if __name__ == '__main__':
     run()

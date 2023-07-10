@@ -1,0 +1,90 @@
+[2023-06-29 09:12 AM] | Transaction Type: Deposit | Account Number: 12345 | Amount: P100.0 | Status: Successful
+[2023-06-30 02:30 PM] | Transaction Type: Withdraw | Account Number: 67890 | Amount: P200.0 | Status: Successful
+[2023-07-01 11:45 AM] | Transaction Type: Transfer | Account Number: 12345 | Amount: P150.0 | Status: Successful
+[2023-07-09 11:58 PM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:03 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:04 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:05 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:05 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:07 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 12:07 AM] Transaction Type: Withdraw | Account Number: 123456 | Amount: P100 | Status: Success
+[2023-07-10 02:55 AM] Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 02:55 AM] Transaction Type: Withdraw | Account Number: 99999999999 | Amount: P5000.0 | Status: Success
+[2023-07-10 02:56 AM] Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 02:56 AM] Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 02:58 AM] Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 02:58 AM] Transaction Type: Withdraw | Account Number: 99999999999 | Amount: P100 | Status: Success
+[2023-07-10 02:58 AM] Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 02:58 AM] Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:00 AM] Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:01 AM] Transaction Type: Deposit | Account Number: 99999999999 | Amount: P5000.0 | Status: Success
+[2023-07-10 03:01 AM] Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:01 AM] Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:07 AM] Transaction Type: Transfer | Account Number: 99999999999 | Amount: P2200.0 | Status: Success
+[2023-07-10 03:07 AM] Transaction Type: Received | Account Number: 456789123 | Amount: P2200.0 | Status: Success
+[2023-07-10 03:07 AM] Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:13 AM] Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:22 AM] Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:31 AM] | Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:31 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P10000.0 | Status: Success
+[2023-07-10 03:31 AM] | Transaction Type: Account Summary | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 03:38 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 03:54 AM] | Transaction Type: Transfer | Account Number: 99999999999 | Amount: P5000.0 | Status: Success
+[2023-07-10 03:54 AM] | Transaction Type: Received | Account Number: 456789123 | Amount: P5000.0 | Status: Success
+[2023-07-10 04:01 AM] | Transaction Type: Withdraw | Account Number: 99999999999 | Amount: P10000.0 | Status: Success
+[2023-07-10 04:02 AM] | Transaction Type: Withdraw | Account Number: 99999999999 | Amount: P5000.0 | Status: Success
+[2023-07-10 04:03 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P10000.0 | Status: Success
+[2023-07-10 04:04 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 04:05 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 04:11 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:13 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:15 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:15 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:16 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 04:17 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 04:18 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 04:20 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 04:21 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 04:22 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:26 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 04:27 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 04:36 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 04:36 AM] | Transaction Type: Withdraw | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:37 AM] | Transaction Type: Transfer | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:37 AM] | Transaction Type: Received | Account Number: 456789123 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:38 AM] | Transaction Type: Transfer | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 04:38 AM] | Transaction Type: Received | Account Number: 456789123 | Amount: P2000.0 | Status: Success
+[2023-07-10 04:39 AM] | Transaction Type: Transfer | Account Number: 99999999999 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:39 AM] | Transaction Type: Received | Account Number: 456789123 | Amount: P1000.0 | Status: Success
+[2023-07-10 04:40 AM] | Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 04:40 AM] | Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 04:40 AM] | Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 04:41 AM] | Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 04:46 AM] | Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 04:47 AM] | Transaction Type: Withdraw | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 04:50 AM] | Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 04:50 AM] | Transaction Type: Balance Inquiry | Account Number: 99999999999 | Amount: P0.0 | Status: Success
+[2023-07-10 04:51 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P10000.0 | Status: Success
+[2023-07-10 08:29 AM] | Transaction Type: Withdraw | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 08:29 AM] | Transaction Type: Deposit | Account Number: 99999999999 | Amount: P500.0 | Status: Success
+[2023-07-10 08:30 AM] | Transaction Type: Transfer | Account Number: 99999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 08:30 AM] | Transaction Type: Receive | Account Number: 456789123 | Amount: P2000.0 | Status: Success
+[2023-07-10 08:59 AM] | Transaction Type: Transfer | Account Number: 999999999 | Amount: P5000.0 | Status: Success
+[2023-07-10 08:59 AM] | Transaction Type: Receive | Account Number: 456789123 | Amount: P5000.0 | Status: Success
+[2023-07-10 09:19 AM] | Transaction Type: Deposit | Account Number: 999999999 | Amount: P48000.0 | Status: Success
+[2023-07-10 09:19 AM] | Transaction Type: Deposit | Account Number: 999999999 | Amount: P48000.0 | Status: Success
+[2023-07-10 09:24 AM] | Transaction Type: Deposit | Account Number: 649895486 | Amount: P8500.0 | Status: Success
+[2023-07-10 09:27 AM] | Transaction Type: Initial Deposit | Account Number: 118266548 | Amount: P8500.0 | Status: Success
+[2023-07-10 09:27 AM] | Transaction Type: Deposit | Account Number: 118266548 | Amount: P8500.0 | Status: Success
+[2023-07-10 09:28 AM] | Transaction Type: Initial Deposit | Account Number: 922013873 | Amount: P8000.0 | Status: Success
+[2023-07-10 09:28 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:29 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:29 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:31 AM] | Transaction Type: Transfer | Account Number: 922013873 | Amount: P5000.0 | Status: Success
+[2023-07-10 09:31 AM] | Transaction Type: Receive | Account Number: 999999999 | Amount: P5000.0 | Status: Success
+[2023-07-10 09:36 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:37 AM] | Transaction Type: Transfer | Account Number: 922013873 | Amount: P2000.0 | Status: Success
+[2023-07-10 09:37 AM] | Transaction Type: Receive | Account Number: 999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 09:43 AM] | Transaction Type: Deposit | Account Number: 922013873 | Amount: P10000.0 | Status: Success
+[2023-07-10 09:44 AM] | Transaction Type: Transfer | Account Number: 922013873 | Amount: P3000.0 | Status: Success
+[2023-07-10 09:44 AM] | Transaction Type: Receive | Account Number: 999999999 | Amount: P3000.0 | Status: Success
