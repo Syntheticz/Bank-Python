@@ -57,7 +57,7 @@ instruct.place(x=375, y=230)
 def next():
     
     global amount, transaction
-    gen = objects.DocumentGenerator("receipt/name.pdf")
+    gen = objects.DocumentGenerator("receipt/receipt.pdf")
     gen.account_number = current_user.account_number
     gen.amount = amount
     gen.transaction_type = transaction

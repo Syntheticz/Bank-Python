@@ -53,10 +53,17 @@ def press(num):
         enterPin.set(pin)
 
 # Function that shows error message if PIN is invalid
-def error():
+def error(x):
     global errorlb
-    errorlb = Label(window, text="Invalid Account Number.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
-    errorlb.place(x=400, y=280)
+
+    
+    if x == "1":
+        errorlb = Label(window, text="You cannot transfer on your own account.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=400, y=280)
+    else:
+        errorlb = Label(window, text="Invalid Account Number.", font=("Arial", 12), fg='#AC3333', bg="#E7E6DD")
+        errorlb.place(x=400, y=280)
+
 
 # Function to clear contents in text field
 def clear():
@@ -66,8 +73,12 @@ def clear():
     errorlb.config(text="", fg="#E7E6DD")
 
 def next():
+    if enterPin.get() == account.current_user:
+        print(enterPin.get(), account.current_user.account_number)
+        error("1")
     if not get_receiver():
-        error()
+        error("2")
+
     else:
             recipient_acc_num = enterPin.get()
             window.destroy()
@@ -163,7 +174,7 @@ clear_border.place(x=555, y=370)
 
 ok_border = Frame(window, highlightbackground = "#1C6516", highlightthickness = 2, bd=0)
 ok = Button(ok_border, text=' OK ', fg='white', bg='#5AAC33', font='bold',
-                    command=lambda: next() if len(pin) == 9 else error(), height=1, width=7)
+                    command=lambda: next() if len(pin) == 9 else error(2), height=1, width=7)
 ok.pack()
 ok_border.place(x=555, y=420)
 

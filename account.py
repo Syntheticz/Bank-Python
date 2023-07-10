@@ -3,6 +3,7 @@ from objects import Account
 import filehandling
 from filehandling import fetch_acc, save_account, save_account_current,  decrypt_account, fetch_card_contents, retrieve_key
 from datetime import datetime
+import objects
 
 #TESTER:
 client = Account()
@@ -154,6 +155,12 @@ def login(pin):
 
 
 
+def generate_report(account_number, amount, transaction):
+    gen = objects.DocumentGenerator("report/report.pdf")
+    gen.account_number = account_number
+    gen.amount = amount
+    gen.transaction_type = transaction
+    gen.generateReport();
 
 
 #TRANSACTION
@@ -173,6 +180,8 @@ def deposit(amount):
             save_account_current(client)
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             filehandling.saveTransactionLog("Deposit",amount,client.account_number,"Success")
+            generate_report(client.account_number, amount, "Deposit")
+
             break
             
         else:
@@ -211,6 +220,7 @@ def withdraw(amount):
 
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             filehandling.saveTransactionLog("Withdraw",amount,client.account_number,"Success")
+            generate_report(client.account_number, amount, "Withdraw")
             break
  
         else:
@@ -232,13 +242,12 @@ def receiver(account_receiver):
     # RETRIEVE KEY ENCRYPTION OF RECIPIENT ACCOUNT
     key = retrieve_key(account_receiver)
     print(key)
-    if key is None:
+    if key == None:
         return False
     else:
         # RETRIEVE HERE RECEIVER ACCOUNT USING the account number from account_receiver
         current_recipient = fetch_acc(account_receiver, int(key[1]))
         recipient = decrypt_account(current_recipient, int(key[1]))
-        
         return True
 
 
@@ -267,8 +276,9 @@ def transfer(amount,recipient_account_number):
             filehandling.saveTransactionLog("Transfer",amount,client.account_number,"Success")
             #save_recipient:
             save_account(recipient,int(key[1]))
-            filehandling.saveTransactionLog("Received",amount,recipient.account_number,"Success")
-            # CHECKSUM HERE-
+            filehandling.saveTransactionLog("Receive",amount,recipient.account_number,"Success")
+            # REPORT
+            generate_report(client.account_number, amount, "Transfer")
             break
         else:
             filehandling.saveInvalidAmountLog(client.account_number, "Transfer")

@@ -9,5 +9,10 @@ User '12345' logged in at [2023-07-10 12:05 AM].
 User '12345' logged in at [2023-07-10 12:07 AM].
 User '12345' logged in at [2023-07-10 12:07 AM].
 User '99999999999' logged in at [2023-07-10 03:04 AM].
+<<<<<<< HEAD
 User '317049968' logged in at [2023-07-10 07:30 AM].
 User '852073535' logged in at [2023-07-10 07:44 AM].
+=======
+User '99999999999' logged in at [2023-07-10 08:29 AM].
+User '99999999999' logged in at [2023-07-10 08:40 AM].
+>>>>>>> cbf0df2e4c76c3bf7f77c4497bcd56140f547a57
