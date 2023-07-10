@@ -11,6 +11,11 @@ from reportlab.lib import colors
 from csv import DictWriter, DictReader
 from io import StringIO
 
+from reportlab.platypus import Table, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib.units import inch
+from reportlab.platypus import Paragraph
 
 class TransactionType(Enum):
     WITHDRAW = "WITHDRAW"
@@ -136,6 +141,9 @@ class DocumentGenerator:
         self.canva.setFont("Helvetica", 12)
         self.canva.setLineWidth(1)
 
+        self.doc = SimpleDocTemplate(doc_path, pagesize=letter)
+        self.elements = []
+        self.styles = getSampleStyleSheet()
         # Generate a random reference number
         self.reference_number = str(uuid.uuid4())
 
@@ -146,6 +154,8 @@ class DocumentGenerator:
         self.account_number = ""
         self.transaction_type = TransactionType
         self.amount = ""
+
+        self.table_y = self.page_height - 50
 
         
     def centerXPos(self, text):
@@ -174,12 +184,12 @@ class DocumentGenerator:
         self.canva.drawString(100,350, "Reference ID:           " + str(self.reference_number))
        
         self.canva.setDash([4, 2])  # Set the dash pattern (4 units on, 2 units off)
-        self.canva.line(100, 300, 512, 200)
+        self.canva.line(100, 300, 512, 300)
 
         self.canva.drawString(self.centerXPos("Thank you for using OUR BANK ATM!"),270, "Thank you for using OUR BANK ATM!")
         
         self.canva.setDash([4, 2])  # Set the dash pattern (4 units on, 2 units off)
-        self.canva.line(100, 250, 512, 100)
+        self.canva.line(100, 250, 512, 250)
 
         # Save the document
         self.canva.save()
@@ -188,21 +198,35 @@ class DocumentGenerator:
 
 
     def generateReport(self) :
-        
+
         self.frequency_usage = 0;
         self.canva.setDash([4, 2])  # Set the dash pattern (4 units on, 2 units off)
         self.canva.line(100, 700, 512, 700)
 
         self.canva.drawString(self.centerXPos("Monthly Report"), 660, "Monthly Report")
 
-        self.canva.drawString(self.centerXPos("OUR BANK"),630, "OUR BANK")
-
-        self.canva.setDash([4, 2])  # Set the dash pattern (4 units on, 2 units off)
-        self.canva.line(100, 600, 512, 600)
+        # Set styles for the headings
+        heading1_style = ParagraphStyle(
+            name="Heading1",
+            parent=self.styles["Heading1"],
+            alignment=1,
+            spaceAfter=0.5 * inch
+        )
+        heading2_style = ParagraphStyle(
+            name="Heading2",
+            parent=self.styles["Heading2"],
+            alignment=1,
+            spaceAfter=0.25 * inch
+        )
 
         # Prepare the table data
         data = [  
         ]
+
+        self.elements.append(Paragraph("<b>Monthly Report</b>", heading1_style))
+        self.elements.append(Paragraph("<b>OUR BANK</b>", heading2_style))
+        self.elements.append(Spacer(1, 0.5 * inch))
+        
         from filehandling import read_log_files
 
         account_details = read_log_files()
@@ -228,8 +252,7 @@ class DocumentGenerator:
             data.append([])  # Add an empty row after each account
 
         # Set table style
-        # Set table style
-        table_style = TableStyle([
+        table_style = [
             ("BACKGROUND", (0, 0), (-1, 0), colors.white),
             ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
             ("ALIGN", (0, 0), (-1, -1), "CENTER"),
@@ -237,24 +260,25 @@ class DocumentGenerator:
             ("FONTSIZE", (0, 0), (-1, -1), 12),
             ("BOTTOMPADDING", (0, 0), (-1, 0), 12),
             ("BACKGROUND", (0, 1), (-1, -1), colors.white),
-        ])
-
+            ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+            ("WORDWRAP", (0, 0), (-1, -1), True),
+        ]
+        
         # Create table object
         table = Table(data, colWidths=[100, 100, 150])
 
-        # Apply table style
         table.setStyle(table_style)
 
-        # Calculate table width and height
-        table_width, table_height = table.wrapOn(self.canva, 400, 200)
+        self.elements.append(table)
 
-        # Position the table on the canvas
-        table_x = (letter[0] - table_width) / 2
-        table_y = (letter[1] - table_height) / 2
-        table.drawOn(self.canva, table_x , table_y + 50)
+        self.doc.build(self.elements)
 
-        # Save the PDF file
-        self.canva.save()
+        print("Saved")
+
+
+    def calculateTableHeight(self, table):
+        table.wrapOn(self.canva, 400, 200)
+        return table._height
 
         print("saved")
 
