@@ -173,6 +173,14 @@ def deposit(amount):
     client = decrypt_account(enc_client, current_key)
     while True:
         amount = float(amount)
+        
+
+        if client.account_balance == 0.00:
+            client.account_balance += amount
+            save_account_current(client)
+            filehandling.saveTransactionLog("Initial Deposit",amount,client.account_number,"Success")
+            break
+            
         if validate_amount(amount):
             client.account_balance += amount
             print(client.account_balance)
@@ -180,7 +188,7 @@ def deposit(amount):
             save_account_current(client)
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             filehandling.saveTransactionLog("Deposit",amount,client.account_number,"Success")
-            generate_report(client.account_number, amount, "Deposit")
+            #generate_report(client.account_number, amount, "Deposit")
 
             break
             
@@ -220,7 +228,7 @@ def withdraw(amount):
 
             #LOG HERE - account number: client.account_number, trasaction: deposit, amount: amount
             filehandling.saveTransactionLog("Withdraw",amount,client.account_number,"Success")
-            generate_report(client.account_number, amount, "Withdraw")
+            #generate_report(client.account_number, amount, "Withdraw")
             break
  
         else:
@@ -278,7 +286,7 @@ def transfer(amount,recipient_account_number):
             save_account(recipient,int(key[1]))
             filehandling.saveTransactionLog("Receive",amount,recipient.account_number,"Success")
             # REPORT
-            generate_report(client.account_number, amount, "Transfer")
+            #generate_report(client.account_number, amount, "Transfer")
             break
         else:
             filehandling.saveInvalidAmountLog(client.account_number, "Transfer")

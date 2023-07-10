@@ -109,7 +109,7 @@ def next():
     save_account_new(account)
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "regSuccess.py")
+    script_path = os.path.join(current_directory, "initial_deposit.py")
     subprocess.run(["python", script_path])
 
 # Insert Instructions for User

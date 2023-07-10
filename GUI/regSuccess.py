@@ -6,6 +6,7 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import filehandling
+from account import current_user
 
 
 #Windows specifications
@@ -35,6 +36,7 @@ accNum = acc.account_number
 currBal = str(acc.account_balance)
 
 def next():
+    filehandling.saveUserLogin(current_user.account_number)
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "trans_menu.py")

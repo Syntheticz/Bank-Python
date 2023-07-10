@@ -71,3 +71,20 @@
 [2023-07-10 08:30 AM] | Transaction Type: Receive | Account Number: 456789123 | Amount: P2000.0 | Status: Success
 [2023-07-10 08:59 AM] | Transaction Type: Transfer | Account Number: 999999999 | Amount: P5000.0 | Status: Success
 [2023-07-10 08:59 AM] | Transaction Type: Receive | Account Number: 456789123 | Amount: P5000.0 | Status: Success
+[2023-07-10 09:19 AM] | Transaction Type: Deposit | Account Number: 999999999 | Amount: P48000.0 | Status: Success
+[2023-07-10 09:19 AM] | Transaction Type: Deposit | Account Number: 999999999 | Amount: P48000.0 | Status: Success
+[2023-07-10 09:24 AM] | Transaction Type: Deposit | Account Number: 649895486 | Amount: P8500.0 | Status: Success
+[2023-07-10 09:27 AM] | Transaction Type: Initial Deposit | Account Number: 118266548 | Amount: P8500.0 | Status: Success
+[2023-07-10 09:27 AM] | Transaction Type: Deposit | Account Number: 118266548 | Amount: P8500.0 | Status: Success
+[2023-07-10 09:28 AM] | Transaction Type: Initial Deposit | Account Number: 922013873 | Amount: P8000.0 | Status: Success
+[2023-07-10 09:28 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:29 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:29 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:31 AM] | Transaction Type: Transfer | Account Number: 922013873 | Amount: P5000.0 | Status: Success
+[2023-07-10 09:31 AM] | Transaction Type: Receive | Account Number: 999999999 | Amount: P5000.0 | Status: Success
+[2023-07-10 09:36 AM] | Transaction Type: Balance Inquiry | Account Number: 922013873 | Amount: P0.0 | Status: Success
+[2023-07-10 09:37 AM] | Transaction Type: Transfer | Account Number: 922013873 | Amount: P2000.0 | Status: Success
+[2023-07-10 09:37 AM] | Transaction Type: Receive | Account Number: 999999999 | Amount: P2000.0 | Status: Success
+[2023-07-10 09:43 AM] | Transaction Type: Deposit | Account Number: 922013873 | Amount: P10000.0 | Status: Success
+[2023-07-10 09:44 AM] | Transaction Type: Transfer | Account Number: 922013873 | Amount: P3000.0 | Status: Success
+[2023-07-10 09:44 AM] | Transaction Type: Receive | Account Number: 999999999 | Amount: P3000.0 | Status: Success

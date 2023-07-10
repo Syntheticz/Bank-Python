@@ -278,7 +278,7 @@ def read_log_files():
                 fields = line.strip().split("'")
 
                 # Extract the account number and login time
-                account_number = fields[1]
+                account_number = fields[0]
                 login_time = fields[2].strip().split("[")[1].split("]")[0]
 
                 # Check if the account number exists in the dictionary

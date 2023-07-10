@@ -93,7 +93,7 @@ def check_input():
 #Text Field
 enterPin = StringVar()
 entry_font = ("Arial", 14) 
-pin_field = Entry(window, textvariable=enterPin, width=20, font=entry_font, state='readonly',
+pin_field = Entry(window, textvariable=enterPin, width=20, font=entry_font, state='readonly', show = "*",
                   justify="center", fg='#162F65')
 pin_field.place(x=335, y=225)
 
